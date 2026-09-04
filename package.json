@@ -1,0 +1,13 @@
+{
+  "name": "boxly-programacion-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sitio estático BOXLY — Programación Web",
+  "scripts": {
+    "format": "prettier --write \"**/*.{html,css,js,md,json}\"",
+    "format:check": "prettier --check \"**/*.{html,css,js,md,json}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  }
+}
