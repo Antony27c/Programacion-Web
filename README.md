@@ -76,17 +76,6 @@ npm install
 npm run format
 ```
 
-## Flujo Git (entrega)
-
-```bash
-git checkout feature/maquetacion
-git add .
-git commit -m "Maquetación HTML BOXLY con Bootstrap y estilos propios"
-git push -u origin feature/maquetacion
-```
-
-Después: abrir Pull Request hacia `main`, mergear y activar GitHub Pages (Settings → Pages → Deploy from branch `main` / carpeta raíz).
-
 ## Alumno
 
 Chocobar Antonio  
