@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Agendá tu turno en el taller BOXLY de Salta." />
+    <title>BOXLY | Agendar turno</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header>
+      <nav class="navbar navbar-expand-lg bx-navbar" aria-label="Principal">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">
+            <span class="bx-logo-mark" aria-hidden="true">BX</span>
+            <span>BOXLY</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuPrincipal" aria-controls="menuPrincipal" aria-expanded="false" aria-label="Abrir menú">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="menuPrincipal">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+              <li class="nav-item"><a class="nav-link" data-nav href="index.html">Inicio</a></li>
+              <li class="nav-item"><a class="nav-link" data-nav href="nosotros.html">Nosotros</a></li>
+              <li class="nav-item"><a class="nav-link" data-nav href="servicios.html">Servicios</a></li>
+              <li class="nav-item"><a class="nav-link" data-nav href="turnos.html">Turnos</a></li>
+              <li class="nav-item"><a class="nav-link" data-nav href="galeria.html">Galería</a></li>
+              <li class="nav-item"><a class="nav-link" data-nav href="contacto.html">Contacto</a></li>
+              <li class="nav-item"><a class="btn btn-bx-primary ms-lg-2" href="turnos.html">Agendar turno</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main id="contenido">      <section class="bx-page-hero">
+        <div class="container">
+          <p class="eyebrow">Turnos</p>
+          <h1>Agendá tu visita</h1>
+          <p>Elegí día, horario y servicio. Te confirmamos por WhatsApp.</p>
+        </div>
+      </section>
+      <section class="bx-section bx-section-white">
+        <div class="container">
+          <div class="row g-4">
+            <div class="col-lg-8">
+              <h2 class="h3 mb-3">Datos del turno</h2>
+              <div class="alert alert-success d-none" role="status" tabindex="-1" data-form-success>Solicitud enviada. Te contactaremos para confirmar el turno.</div>
+              <form class="bx-form needs-validation" data-validate novalidate>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label" for="nombre">Nombre y apellido</label>
+                    <input class="form-control" id="nombre" name="nombre" required autocomplete="name" placeholder="Ej: Antonio Chocobar" />
+                    <div class="invalid-feedback">Ingresá tu nombre.</div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label" for="telefono">Teléfono / WhatsApp</label>
+                    <input class="form-control" id="telefono" name="telefono" type="tel" required autocomplete="tel" placeholder="+54 387 ..." />
+                    <div class="invalid-feedback">Ingresá un teléfono válido.</div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="vehiculo">Vehículo (marca, modelo, año)</label>
+                    <input class="form-control" id="vehiculo" name="vehiculo" required placeholder="Ej: Volkswagen Gol 2018" />
+                    <div class="invalid-feedback">Indicá el vehículo.</div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label" for="servicio">Servicio</label>
+                    <select class="form-select" id="servicio" name="servicio" required>
+                      <option value="">Elegí una opción</option>
+                      <option>Service</option>
+                      <option>Frenos</option>
+                      <option>Diagnóstico</option>
+                      <option>Otro</option>
+                    </select>
+                    <div class="invalid-feedback">Seleccioná un servicio.</div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label" for="fecha">Fecha preferida</label>
+                    <input class="form-control" id="fecha" name="fecha" type="date" required />
+                    <div class="invalid-feedback">Elegí una fecha.</div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label" for="horario">Horario</label>
+                    <select class="form-select" id="horario" name="horario" required>
+                      <option value="">Elegí</option>
+                      <option>Mañana</option>
+                      <option>Tarde</option>
+                    </select>
+                    <div class="invalid-feedback">Elegí un horario.</div>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label" for="sintoma">¿Qué le pasa al auto?</label>
+                    <textarea class="form-control" id="sintoma" name="sintoma" rows="4" required placeholder="Describí el ruido, luz en tablero o síntoma..."></textarea>
+                    <div class="invalid-feedback">Contanos el problema.</div>
+                  </div>
+                </div>
+                <button class="btn btn-bx-primary mt-4" type="submit">Confirmar turno</button>
+              </form>
+            </div>
+            <div class="col-lg-4">
+              <aside class="bx-side-panel">
+                <h2 class="h4">Horarios</h2>
+                <ul class="mb-0 ps-3">
+                  <li>Lun a Vie: 8:00 – 18:00</li>
+                  <li>Sábados: 8:00 – 13:00</li>
+                  <li>Domingos: cerrado</li>
+                  <li>Confirmación en menos de 2 hs hábiles</li>
+                </ul>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </section>    </main>
+    <footer class="bx-footer">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <p class="brand">BOXLY</p>
+            <p>Taller de servicio automotor en Salta. Diagnóstico honesto. Trabajo garantizado.</p>
+          </div>
+          <div class="col-md-4">
+            <h3>Servicios</h3>
+            <ul>
+              <li><a href="servicios.html">Mecánica general</a></li>
+              <li><a href="servicio-detalle.html">Frenos y suspensión</a></li>
+              <li><a href="servicios.html">Diagnóstico computarizado</a></li>
+              <li><a href="servicios.html">Service programado</a></li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <h3>Contacto</h3>
+            <ul>
+              <li>Av. Bolivia 2450, Salta</li>
+              <li>Lun–Vie 8:00–18:00</li>
+              <li><a href="tel:+543875550199">+54 387 555-0199</a></li>
+              <li><a href="mailto:turnos@boxly.com.ar">turnos@boxly.com.ar</a></li>
+            </ul>
+          </div>
+        </div>
+        <p class="bx-footer-copy mb-0">© <span data-year></span> BOXLY · Salta, Argentina</p>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
