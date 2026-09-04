@@ -10,28 +10,58 @@ https://www.figma.com/design/1MKE3Skw1MhIkSsq2L2091/Taller-Mecanico-Mockups-UI-U
 
 ## Pantallas (12 + portada)
 
-| Archivo | Contenido |
-|---------|-----------|
-| `00 - Portada TP3.png` | Portada del entregable |
-| `01 - Home.png` | Hero, Nosotros, Servicios, Testimonios, Footer |
-| `02 - Nosotros.png` | Historia, misión, visión y valores |
-| `03 - Servicios.png` | Catálogo de servicios |
-| `04 - Servicio Detalle.png` | Detalle de frenos y suspensión |
-| `05 - Agendar Turno.png` | Formulario de turno |
-| `06 - Presupuesto.png` | Solicitud de presupuesto |
-| `07 - Testimonios.png` | Opiniones de clientes |
-| `08 - Galeria.png` | Trabajos realizados |
-| `09 - Contacto.png` | Ubicación y contacto |
-| `10 - Promociones.png` | Ofertas del mes |
-| `11 - FAQ.png` | Preguntas frecuentes |
-| `12 - Equipo.png` | Perfiles del personal |
+### 00 — Portada TP3
+![Portada TP3](00%20-%20Portada%20TP3.png)
+
+### 01 — Home
+![Home](01%20-%20Home.png)
+
+### 02 — Nosotros
+![Nosotros](02%20-%20Nosotros.png)
+
+### 03 — Servicios
+![Servicios](03%20-%20Servicios.png)
+
+### 04 — Servicio Detalle
+![Servicio Detalle](04%20-%20Servicio%20Detalle.png)
+
+### 05 — Agendar Turno
+![Agendar Turno](05%20-%20Agendar%20Turno.png)
+
+### 06 — Presupuesto
+![Presupuesto](06%20-%20Presupuesto.png)
+
+### 07 — Testimonios
+![Testimonios](07%20-%20Testimonios.png)
+
+### 08 — Galería
+![Galería](08%20-%20Galeria.png)
+
+### 09 — Contacto
+![Contacto](09%20-%20Contacto.png)
+
+### 10 — Promociones
+![Promociones](10%20-%20Promociones.png)
+
+### 11 — FAQ
+![FAQ](11%20-%20FAQ.png)
+
+### 12 — Equipo
+![Equipo](12%20-%20Equipo.png)
 
 ## Componentes
 
-- `Nav/Header.png`
-- `Nav/Footer.png`
-- `Button/Primary.png`
-- `Button/Ghost.png`
+### Nav / Header
+![Header](Nav/Header.png)
+
+### Nav / Footer
+![Footer](Nav/Footer.png)
+
+### Button / Primary
+![Button Primary](Button/Primary.png)
+
+### Button / Ghost
+![Button Ghost](Button/Ghost.png)
 
 ## Marca / UI
 
