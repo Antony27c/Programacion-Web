@@ -6,7 +6,7 @@ Sitio estático del taller **BOXLY** (Salta): servicio mecánico automotor con m
 
 - **Repositorio:** https://github.com/Antony27c/Programacion-Web
 - **Mockups Figma:** https://www.figma.com/design/1MKE3Skw1MhIkSsq2L2091/Taller-Mecanico-Mockups-UI-UX-TP3
-- **Sitio en vivo:** _(completar tras deploy en GitHub Pages o Vercel)_
+- **Sitio en vivo:** https://antony27c.github.io/Programacion-Web/
 
 ## Estructura
 
@@ -63,18 +63,8 @@ Sitio estático del taller **BOXLY** (Salta): servicio mecánico automotor con m
 
 ## Cómo verlo en local
 
-Abrí `index.html` en el navegador, o:
+Abrí `index.html` en el navegador:
 
-```bash
-npx serve .
-```
-
-## Formato
-
-```bash
-npm install
-npm run format
-```
 
 ## Alumno
 
