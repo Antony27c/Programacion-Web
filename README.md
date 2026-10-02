@@ -26,7 +26,8 @@ Sitio estático del taller **BOXLY** (Salta): servicio mecánico automotor con m
 ├── img/
 ├── Mockups UI_UX TP3/
 ├── auditoria-lighthouse.md
-└── package.json
+├── package.json
+└── clase5/              ← TP5: sitio en PHP con formularios POST/GET
 ```
 
 ## Vistas maquetadas (10)
@@ -86,6 +87,54 @@ git push -u origin feature/maquetacion
 ```
 
 Después: abrir Pull Request hacia `main`, mergear y activar GitHub Pages (Settings → Pages → Deploy from branch `main` / carpeta raíz).
+
+## Clase 5 — Procesamiento de Formularios y Seguridad Web (PHP)
+
+Carpeta: [`clase5/`](clase5/) — el sitio completo migrado a **PHP** con estructura modular
+(`includes/header.php`, `includes/footer.php`, `includes/funciones.php`) y lógica de
+servidor para capturar y procesar datos del navegador.
+
+### Formulario POST — Solicitud de turno (`turnos.php`)
+
+Captura nombre, teléfono, vehículo, servicio, fecha, horario y síntoma. Se procesa en el
+mismo script (`method="post"`). Además se procesan con el mismo patrón los formularios de
+`contacto.php` (nombre, email, mensaje) y `presupuesto.php`.
+
+- Sanitización estricta de `$_POST` con `trim()` + `htmlspecialchars()` (helper `e()` y
+  `limpiar()` en `includes/funciones.php`) antes de cualquier salida → previene **XSS**.
+- Validación en servidor: campos obligatorios (`empty()`/`isset()`), teléfono con regex,
+  fecha válida y no pasada, opciones contra listas blancas, largo mínimo de texto y
+  **formato de email** con `filter_var(..., FILTER_VALIDATE_EMAIL)` en `contacto.php` y
+  `presupuesto.php`.
+- Retroalimentación: `alert-success` con resumen sanitizado del envío, o `alert-danger` +
+  `is-invalid`/`invalid-feedback` por campo.
+- Persistencia: ante error, los valores ya cargados se re-imprimen escapados en el form.
+
+### Formulario GET — Buscador de servicios (`servicios.php?q=`)
+
+`method="get"` filtra el catálogo de servicios en servidor (`?q=frenos`), ideal para
+búsquedas compartibles por URL. El parámetro se toma con `filter_input(INPUT_GET, ...)`,
+se filtra con `mb_stripos()` y todo resultado se imprime escapado. Muestra
+«N resultado(s) para ...» o alerta de sin resultados.
+
+### Cómo correrlo (XAMPP o servidor embebido)
+
+```bash
+# Con XAMPP: copiar clase5/ a htdocs o usar el servidor embebido de PHP:
+cd clase5
+php -S localhost:8099
+# abrir http://localhost:8099
+```
+
+### Capturas
+
+| Captura | Qué muestra |
+|---------|-------------|
+| `screenshots/get-busqueda.png` | Buscador GET con resultados filtrados |
+| `screenshots/get-sin-resultados.png` | GET sin coincidencias + término escapado |
+| `screenshots/post-errores.png` | POST con errores de validación y campos persistidos |
+| `screenshots/post-exito.png` | POST exitoso con resumen de datos sanitizados |
+| `screenshots/xss-sanitizado.png` | Intento `<script>` neutralizado en la salida |
 
 ## Alumno
 
