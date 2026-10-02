@@ -107,13 +107,25 @@ php -S localhost:8099
 
 ### Capturas
 
-| Captura | Qué muestra |
-|---------|-------------|
-| `screenshots/get-busqueda.png` | Buscador GET con resultados filtrados |
-| `screenshots/get-sin-resultados.png` | GET sin coincidencias + término escapado |
-| `screenshots/post-errores.png` | POST con errores de validación y campos persistidos |
-| `screenshots/post-exito.png` | POST exitoso con resumen de datos sanitizados |
-| `screenshots/xss-sanitizado.png` | Intento `<script>` neutralizado en la salida |
+**POST — Errores de validación y persistencia de campos** (`turnos.php`)
+
+![POST con errores de validación y campos persistidos](clase5/screenshots/post-errores.png)
+
+**POST — Envío exitoso con resumen de datos procesados** (`turnos.php`)
+
+![POST exitoso con resumen de datos sanitizados](clase5/screenshots/post-exito.png)
+
+**GET — Buscador con resultados filtrados** (`servicios.php?q=Frenos`)
+
+![Buscador GET con resultados filtrados](clase5/screenshots/get-busqueda.png)
+
+**GET — Búsqueda sin coincidencias** (`servicios.php?q=xys`)
+
+![GET sin coincidencias](clase5/screenshots/get-sin-resultados.png)
+
+**XSS neutralizado** — el `<script>` se imprime como texto, no se ejecuta (`servicios.php`)
+
+![Intento de script sanitizado en la salida](clase5/screenshots/xss-sanitizado.png)
 
 ## Alumno
 
