@@ -15,7 +15,7 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
           <div class="row g-5 align-items-start">
             <div class="col-lg-5">
-              <div class="bx-placeholder bx-placeholder--tall" role="img" aria-label="Equipo del taller BOXLY">EQUIPO EN TALLER</div>
+              <div class="bx-placeholder bx-placeholder--tall" role="img" aria-label="Equipo del taller BOXLY"><i class="bi bi-people" aria-hidden="true"></i>EQUIPO EN TALLER</div>
             </div>
             <div class="col-lg-7">
               <h2>De la formación técnica al banco de trabajo</h2>

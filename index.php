@@ -24,6 +24,7 @@ require __DIR__ . '/includes/header.php';
           <div class="row g-5 align-items-center">
             <div class="col-lg-6">
               <div class="bx-placeholder bx-placeholder--tall" role="img" aria-label="Foto del taller BOXLY">
+                <i class="bi bi-tools" aria-hidden="true"></i>
                 FOTO TALLER
               </div>
             </div>
@@ -55,28 +56,28 @@ require __DIR__ . '/includes/header.php';
           <div class="row g-4">
             <div class="col-md-6">
               <article class="bx-card">
-                <div class="bx-card-icon" aria-hidden="true"></div>
+                <div class="bx-card-icon" aria-hidden="true"><i class="bi bi-gear-wide-connected"></i></div>
                 <h3>Mecánica general</h3>
                 <p>Motor, distribución, correas, lubricación y fallas de rendimiento.</p>
               </article>
             </div>
             <div class="col-md-6">
               <article class="bx-card">
-                <div class="bx-card-icon" aria-hidden="true"></div>
+                <div class="bx-card-icon" aria-hidden="true"><i class="bi bi-disc"></i></div>
                 <h3>Frenos y suspensión</h3>
                 <p>Pastillas, discos, amortiguadores y alineación preventiva.</p>
               </article>
             </div>
             <div class="col-md-6">
               <article class="bx-card">
-                <div class="bx-card-icon" aria-hidden="true"></div>
+                <div class="bx-card-icon" aria-hidden="true"><i class="bi bi-cpu"></i></div>
                 <h3>Diagnóstico computarizado</h3>
                 <p>Escáner OBD, sensores y puesta a punto electrónica.</p>
               </article>
             </div>
             <div class="col-md-6">
               <article class="bx-card">
-                <div class="bx-card-icon" aria-hidden="true"></div>
+                <div class="bx-card-icon" aria-hidden="true"><i class="bi bi-droplet-half"></i></div>
                 <h3>Service programado</h3>
                 <p>Aceite, filtros, fluidos y checklist según kilometraje.</p>
               </article>

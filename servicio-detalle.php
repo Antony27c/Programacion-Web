@@ -15,7 +15,7 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
           <div class="row g-4">
             <div class="col-lg-8">
-              <div class="bx-placeholder mb-4" role="img" aria-label="Imagen de frenos y suspensión">IMAGEN FRENO / SUSPENSIÓN</div>
+              <div class="bx-placeholder mb-4" role="img" aria-label="Imagen de frenos y suspensión"><i class="bi bi-disc" aria-hidden="true"></i>IMAGEN FRENO / SUSPENSIÓN</div>
               <h2>Qué incluye</h2>
               <ul class="bx-list-check">
                 <li>Inspección de pastillas, discos y líquido de frenos</li>

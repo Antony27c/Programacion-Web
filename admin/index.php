@@ -58,8 +58,8 @@ require __DIR__ . '/../includes/header.php';
           <?php endif; ?>
 
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-            <a href="crear.php" class="btn btn-bx-primary">+ Nuevo turno</a>
-            <form class="d-flex gap-2" method="get" action="index.php">
+            <a href="crear.php" class="btn btn-bx-primary"><i class="bi bi-plus-lg" aria-hidden="true"></i> Nuevo turno</a>
+            <form class="d-flex gap-2 flex-grow-1 flex-sm-grow-0" method="get" action="index.php">
               <label class="visually-hidden" for="estado">Filtrar por estado</label>
               <select class="form-select" id="estado" name="estado">
                 <option value="">Todos los estados</option>
@@ -74,8 +74,8 @@ require __DIR__ . '/../includes/header.php';
           <?php if ($turnos === []): ?>
             <div class="alert alert-info">No hay turnos registrados<?= $filtro !== '' ? ' con estado «' . e($filtro) . '»' : '' ?>.</div>
           <?php else: ?>
-            <div class="table-responsive">
-              <table class="table table-striped table-hover align-middle">
+            <div class="table-responsive-lg">
+              <table class="table table-striped table-hover align-middle bx-table">
                 <thead class="table-dark">
                   <tr>
                     <th scope="col">ID</th>
@@ -85,29 +85,33 @@ require __DIR__ . '/../includes/header.php';
                     <th scope="col">Fecha</th>
                     <th scope="col">Síntoma</th>
                     <th scope="col">Estado</th>
-                    <th scope="col" class="text-end">Acciones</th>
+                    <th scope="col" class="text-end pe-3">Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
                   <?php foreach ($turnos as $t): ?>
                     <tr>
-                      <td><?= e($t['id']) ?></td>
-                      <td>
-                        <strong><?= e($t['nombre']) ?></strong><br />
-                        <small class="text-muted"><?= e($t['telefono']) ?></small>
+                      <td data-label="ID">#<?= e($t['id']) ?></td>
+                      <td data-label="Cliente">
+                        <span>
+                          <strong><?= e($t['nombre']) ?></strong><br />
+                          <small class="text-muted text-nowrap"><?= e($t['telefono']) ?></small>
+                        </span>
                       </td>
-                      <td><?= e($t['vehiculo']) ?></td>
-                      <td><?= e($t['servicio']) ?></td>
-                      <td><?= e(date('d/m/Y', strtotime($t['fecha']))) ?><br /><small class="text-muted"><?= e($t['horario']) ?></small></td>
-                      <td class="small"><?= e(mb_strimwidth($t['sintoma'], 0, 60, '…')) ?></td>
-                      <td><span class="badge <?= e($colores[$t['estado']] ?? 'text-bg-light') ?>"><?= e($t['estado']) ?></span></td>
-                      <td class="text-end text-nowrap">
-                        <a href="editar.php?id=<?= e($t['id']) ?>" class="btn btn-sm btn-warning">Editar</a>
-                        <form class="d-inline" method="post" action="eliminar.php" onsubmit="return confirm('¿Confirma eliminar el turno de <?= e(addslashes($t['nombre'])) ?>?')">
-                          <input type="hidden" name="id" value="<?= e($t['id']) ?>" />
-                          <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
-                          <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
-                        </form>
+                      <td data-label="Vehículo"><?= e($t['vehiculo']) ?></td>
+                      <td data-label="Servicio"><?= e($t['servicio']) ?></td>
+                      <td data-label="Fecha" class="text-nowrap"><span><?= e(date('d/m/Y', strtotime($t['fecha']))) ?><br /><small class="text-muted"><?= e($t['horario']) ?></small></span></td>
+                      <td data-label="Síntoma" class="small"><?= e(mb_strimwidth($t['sintoma'], 0, 60, '…')) ?></td>
+                      <td data-label="Estado"><span><span class="badge <?= e($colores[$t['estado']] ?? 'text-bg-light') ?>"><?= e($t['estado']) ?></span></span></td>
+                      <td>
+                        <div class="bx-actions">
+                          <a href="editar.php?id=<?= e($t['id']) ?>" class="btn btn-sm btn-warning text-nowrap"><i class="bi bi-pencil-square" aria-hidden="true"></i> Editar</a>
+                          <form class="m-0" method="post" action="eliminar.php" onsubmit="return confirm('¿Confirma eliminar el turno de <?= e(addslashes($t['nombre'])) ?>?')">
+                            <input type="hidden" name="id" value="<?= e($t['id']) ?>" />
+                            <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
+                            <button class="btn btn-sm btn-danger text-nowrap" type="submit"><i class="bi bi-trash" aria-hidden="true"></i> Eliminar</button>
+                          </form>
+                        </div>
                       </td>
                     </tr>
                   <?php endforeach; ?>
