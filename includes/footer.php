@@ -8,10 +8,10 @@
           <div class="col-md-4">
             <h3>Servicios</h3>
             <ul>
-              <li><a href="servicios.php">Mecánica general</a></li>
-              <li><a href="servicio-detalle.php">Frenos y suspensión</a></li>
-              <li><a href="servicios.php">Diagnóstico computarizado</a></li>
-              <li><a href="servicios.php">Service programado</a></li>
+              <li><a href="<?= e($base) ?>servicios.php">Mecánica general</a></li>
+              <li><a href="<?= e($base) ?>servicio-detalle.php">Frenos y suspensión</a></li>
+              <li><a href="<?= e($base) ?>servicios.php">Diagnóstico computarizado</a></li>
+              <li><a href="<?= e($base) ?>servicios.php">Service programado</a></li>
             </ul>
           </div>
           <div class="col-md-4">
@@ -28,6 +28,6 @@
       </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="js/main.js"></script>
+    <script src="<?= e($base) ?>js/main.js"></script>
   </body>
 </html>
