@@ -1,55 +1,48 @@
 # BOXLY — Programación Web
 
-Sitio estático del taller **BOXLY** (Salta): servicio mecánico automotor con maquetación HTML5, Bootstrap 5 y estilos propios.
+Sitio del taller **BOXLY** (Salta): servicio mecánico automotor. Maquetación HTML5 + Bootstrap 5,
+backend en PHP y persistencia en MySQL mediante PDO.
 
 ## Enlaces
 
 - **Repositorio:** https://github.com/Antony27c/Programacion-Web
 - **Mockups Figma:** https://www.figma.com/design/1MKE3Skw1MhIkSsq2L2091/Taller-Mecanico-Mockups-UI-UX-TP3
-- **Sitio en vivo:** https://antony27c.github.io/Programacion-Web/
+- **Versión estática (TP4) en GitHub Pages:** https://antony27c.github.io/Programacion-Web/entregas/tp4-html/
 
 ## Estructura
 
 ```
-├── index.html
-├── nosotros.html
-├── servicios.html
-├── servicio-detalle.html
-├── turnos.html
-├── presupuesto.html
-├── testimonios.html
-├── galeria.html
-├── contacto.html
-├── faq.html
-├── css/styles.css
-├── js/main.js
-├── img/
-├── Mockups UI_UX TP3/
-├── auditoria-lighthouse.md
-├── package.json
-└── clase5/              ← TP5: sitio en PHP con formularios POST/GET
+├── config/
+│   ├── conexion.php                 ← TP7: conexión PDO con try-catch
+│   ├── conexion.local.example.php   ← plantilla de credenciales
+│   └── conexion.local.php           ← credenciales reales (NO se versiona)
+├── database/
+│   └── boxly.sql                    ← TP7: base `boxly` + tabla `turnos` + datos de ejemplo
+├── includes/
+│   ├── header.php  footer.php       ← plantilla modular
+│   └── funciones.php                ← sanitización, validación de turnos, CSRF
+├── admin/                           ← TP7: CRUD de turnos
+│   ├── index.php                    ← listado (Read) + filtro por estado
+│   ├── crear.php                    ← alta (Create)
+│   ├── editar.php                   ← modificación (Update)
+│   ├── eliminar.php                 ← baja (Delete)
+│   └── _formulario.php              ← formulario compartido alta/edición
+├── index.php nosotros.php servicios.php servicio-detalle.php turnos.php
+├── presupuesto.php testimonios.php galeria.php contacto.php faq.php
+├── css/  js/  img/
+├── entregas/
+│   └── tp4-html/                    ← TP4: sitio estático HTML + auditoría Lighthouse
+└── docs/
+    ├── tp3/                         ← wireframe, informe TP3 y mockups Figma
+    └── tp5/screenshots/             ← capturas TP5
 ```
-
-## Vistas maquetadas (10)
-
-1. Inicio  
-2. Nosotros  
-3. Servicios  
-4. Servicio detalle (Frenos y suspensión)  
-5. Agendar turno  
-6. Presupuesto  
-7. Testimonios  
-8. Galería  
-9. Contacto  
-10. FAQ  
 
 ## Tecnología
 
-- HTML5 semántico  
-- Bootstrap 5.3 (CDN)  
-- CSS personalizado (paleta BOXLY)  
-- JavaScript (nav activa + validación de formularios)  
-- Prettier  
+- HTML5 semántico, Bootstrap 5.3 (CDN), CSS propio (paleta BOXLY)
+- PHP 8 con includes modulares
+- MySQL 8 + PDO (consultas preparadas)
+- Prettier
 
 ## Paleta
 
@@ -62,70 +55,105 @@ Sitio estático del taller **BOXLY** (Salta): servicio mecánico automotor con m
 | Fondo | `#F8F9FA` | Superficies |
 | Éxito | `#10B981` | Confirmaciones |
 
-## Cómo verlo en local
+## Cómo correrlo en local
 
-Abrí `index.html` en el navegador:
+1. **Base de datos:** en MySQL Workbench abrir `database/boxly.sql` (*File → Open SQL Script*) y
+   ejecutarlo. Crea la base `boxly` con la tabla `turnos` y 5 registros de ejemplo.
+2. **Credenciales:** completar la contraseña de MySQL en `config/conexion.local.php`
+   (si no existe, copiar `config/conexion.local.example.php` con ese nombre).
+3. **Servidor:**
 
+   ```bash
+   # Servidor embebido de PHP (o copiar el proyecto a htdocs de XAMPP)
+   php -S localhost:8099
+   ```
 
-## Clase 5 — Procesamiento de Formularios y Seguridad Web (PHP)
+4. Abrir http://localhost:8099 (sitio) y http://localhost:8099/admin/ (panel de turnos).
 
-Carpeta: [`clase5/`](clase5/) — el sitio completo migrado a **PHP** con estructura modular
-(`includes/header.php`, `includes/footer.php`, `includes/funciones.php`) y lógica de
-servidor para capturar y procesar datos del navegador.
+---
+
+## TP7 — Persistencia y conexión PHP-MySQL segura
+
+Entidad gestionada: **`turnos`** del taller (cliente, teléfono, vehículo, servicio, fecha,
+horario, síntoma y estado). El flujo completo queda integrado al sitio:
+
+- El cliente pide un turno desde **`turnos.php`** → se valida en servidor y se guarda en MySQL.
+- El taller lo gestiona desde **`admin/`**: lo lista, filtra por estado, edita (p. ej. pasa de
+  *Pendiente* a *Confirmado*) o elimina.
+
+### Seguridad aplicada
+
+| Requisito | Implementación |
+|-----------|----------------|
+| Conexión segura | `config/conexion.php`: PDO con `ERRMODE_EXCEPTION`, `FETCH_ASSOC`, `EMULATE_PREPARES = false` y `try/catch (PDOException)`. El detalle del error va a `error_log`, no al navegador. Credenciales fuera del repo. |
+| SQL Injection | **Todas** las consultas (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) usan `prepare()` + `execute()` con `:parametros`. El `id` se valida con `FILTER_VALIDATE_INT`. |
+| XSS | Toda variable impresa pasa por `e()` → `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')`. |
+| Validación | `validarTurno()` en servidor: obligatorios, largo, regex de teléfono, fecha válida y listas blancas para servicio, horario y estado (coinciden con los `ENUM` de la tabla). |
+| CSRF | Alta, edición y baja exigen un token de sesión (`csrfToken()` / `csrfValido()`). La baja solo acepta `POST`: un link GET no puede borrar registros. |
+
+### Modelo de datos (`database/boxly.sql`)
+
+| Campo | Tipo |
+|-------|------|
+| `id` | INT UNSIGNED, PK, AUTO_INCREMENT |
+| `nombre` | VARCHAR(120) |
+| `telefono` | VARCHAR(20) |
+| `vehiculo` | VARCHAR(150) |
+| `servicio` | ENUM('Service','Frenos','Diagnóstico','Otro') |
+| `fecha` | DATE (indexado) |
+| `horario` | ENUM('Mañana','Tarde') |
+| `sintoma` | TEXT |
+| `estado` | ENUM('Pendiente','Confirmado','Finalizado','Cancelado') |
+| `creado_en` / `actualizado_en` | TIMESTAMP |
+
+---
+
+## TP5 — Procesamiento de formularios y seguridad web (PHP)
+
+El sitio completo en **PHP** con estructura modular (`includes/header.php`, `includes/footer.php`,
+`includes/funciones.php`) y lógica de servidor para capturar y procesar datos del navegador.
 
 ### Formulario POST — Solicitud de turno (`turnos.php`)
 
-Captura nombre, teléfono, vehículo, servicio, fecha, horario y síntoma. Se procesa en el
-mismo script (`method="post"`). Además se procesan con el mismo patrón los formularios de
-`contacto.php` (nombre, email, mensaje) y `presupuesto.php`.
-
-- Sanitización estricta de `$_POST` con `trim()` + `htmlspecialchars()` (helper `e()` y
-  `limpiar()` en `includes/funciones.php`) antes de cualquier salida → previene **XSS**.
-- Validación en servidor: campos obligatorios (`empty()`/`isset()`), teléfono con regex,
-  fecha válida y no pasada, opciones contra listas blancas, largo mínimo de texto y
-  **formato de email** con `filter_var(..., FILTER_VALIDATE_EMAIL)` en `contacto.php` y
-  `presupuesto.php`.
-- Retroalimentación: `alert-success` con resumen sanitizado del envío, o `alert-danger` +
-  `is-invalid`/`invalid-feedback` por campo.
-- Persistencia: ante error, los valores ya cargados se re-imprimen escapados en el form.
+- Sanitización de `$_POST` con `trim()` + `htmlspecialchars()` (helpers `limpiar()` y `e()`) → previene **XSS**.
+- Validación en servidor: obligatorios, teléfono con regex, fecha válida y no pasada, listas
+  blancas y **formato de email** con `filter_var(..., FILTER_VALIDATE_EMAIL)` en `contacto.php` y `presupuesto.php`.
+- Retroalimentación con `alert-success` / `alert-danger` + `is-invalid` / `invalid-feedback` por campo.
+- Persistencia de los valores cargados (escapados) ante errores.
 
 ### Formulario GET — Buscador de servicios (`servicios.php?q=`)
 
-`method="get"` filtra el catálogo de servicios en servidor (`?q=frenos`), ideal para
-búsquedas compartibles por URL. El parámetro se toma con `filter_input(INPUT_GET, ...)`,
-se filtra con `mb_stripos()` y todo resultado se imprime escapado. Muestra
-«N resultado(s) para ...» o alerta de sin resultados.
-
-### Cómo correrlo (XAMPP o servidor embebido)
-
-```bash
-# Con XAMPP: copiar clase5/ a htdocs o usar el servidor embebido de PHP:
-cd clase5
-php -S localhost:8099
-# abrir http://localhost:8099
-```
+Filtra el catálogo en servidor con `filter_input(INPUT_GET, ...)` y `mb_stripos()`; todo resultado
+se imprime escapado.
 
 ### Capturas
 
-**POST — Errores de validación y persistencia de campos** (`turnos.php`)
+**POST — Errores de validación y persistencia de campos**
 
-![POST con errores de validación y campos persistidos](clase5/screenshots/post-errores.png)
+![POST con errores de validación y campos persistidos](docs/tp5/screenshots/post-errores.png)
 
-**POST — Envío exitoso con resumen de datos procesados** (`turnos.php`)
+**POST — Envío exitoso con resumen de datos procesados**
 
-![POST exitoso con resumen de datos sanitizados](clase5/screenshots/post-exito.png)
+![POST exitoso con resumen de datos sanitizados](docs/tp5/screenshots/post-exito.png)
 
 **GET — Buscador con resultados filtrados** (`servicios.php?q=Frenos`)
 
-![Buscador GET con resultados filtrados](clase5/screenshots/get-busqueda.png)
+![Buscador GET con resultados filtrados](docs/tp5/screenshots/get-busqueda.png)
 
 **GET — Búsqueda sin coincidencias** (`servicios.php?q=xys`)
 
-![GET sin coincidencias](clase5/screenshots/get-sin-resultados.png)
+![GET sin coincidencias](docs/tp5/screenshots/get-sin-resultados.png)
 
-**XSS neutralizado** — el `<script>` se imprime como texto, no se ejecuta (`servicios.php`)
+**XSS neutralizado** — el `<script>` se imprime como texto, no se ejecuta
 
-![Intento de script sanitizado en la salida](clase5/screenshots/xss-sanitizado.png)
+![Intento de script sanitizado en la salida](docs/tp5/screenshots/xss-sanitizado.png)
+
+---
+
+## TP3 / TP4 — Mockups y maquetación
+
+- Mockups UI/UX en Figma: [`docs/tp3/mockups/`](docs/tp3/mockups/) · wireframe: [`docs/tp3/wireframe-figma-taller.png`](docs/tp3/wireframe-figma-taller.png)
+- Maquetación estática de las 10 vistas (HTML + Bootstrap): [`entregas/tp4-html/`](entregas/tp4-html/) · auditoría: [`auditoria-lighthouse.md`](entregas/tp4-html/auditoria-lighthouse.md)
 
 ## Alumno
 
