@@ -229,6 +229,19 @@ h4,
   background: var(--bx-bg);
 }
 
+.bx-img {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--bx-border);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.bx-gallery-card > img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
 .bx-placeholder {
   position: relative;
   overflow: hidden;

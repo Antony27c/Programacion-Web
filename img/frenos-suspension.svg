@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Disco de freno ventilado y amortiguador">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#0052ff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0052ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.45"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#grid)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+  <g transform="translate(36,28)">
+    <rect width="42" height="42" rx="6" fill="#0052ff"/>
+    <text x="21" y="27" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="16" text-anchor="middle">BX</text>
+    <text x="56" y="20" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="2">BOXLY · SALTA</text>
+    <text x="56" y="36" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="14">FRENOS Y SUSPENSIÓN · CONTROL DE DESGASTE</text>
+  </g>
+  <g transform="translate(275,275)">
+    <circle r="145" fill="#1e293b" stroke="#94a3b8" stroke-width="14"/>
+    <circle r="118" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="10 8"/>
+    <circle r="92" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="8 10"/>
+    <g fill="#0f172a">
+      <circle cx="105" cy="0" r="6"/><circle cx="74" cy="74" r="6"/><circle cx="0" cy="105" r="6"/><circle cx="-74" cy="74" r="6"/>
+      <circle cx="-105" cy="0" r="6"/><circle cx="-74" cy="-74" r="6"/><circle cx="0" cy="-105" r="6"/><circle cx="74" cy="-74" r="6"/>
+      <circle cx="82" cy="34" r="5"/><circle cx="34" cy="82" r="5"/><circle cx="-34" cy="82" r="5"/><circle cx="-82" cy="34" r="5"/>
+      <circle cx="-82" cy="-34" r="5"/><circle cx="-34" cy="-82" r="5"/><circle cx="34" cy="-82" r="5"/><circle cx="82" cy="-34" r="5"/>
+    </g>
+    <circle r="54" fill="#0f172a" stroke="#cbd5e1" stroke-width="6"/>
+    <circle r="20" fill="#334155"/>
+    <g fill="#94a3b8">
+      <circle cx="0" cy="-36" r="5"/><circle cx="34" cy="-11" r="5"/><circle cx="21" cy="29" r="5"/><circle cx="-21" cy="29" r="5"/><circle cx="-34" cy="-11" r="5"/>
+    </g>
+    <path d="M55 -138 C128 -110 152 -25 128 45 L82 28 C98 -20 82 -78 35 -98 Z" fill="#0052ff" stroke="#e2e8f0" stroke-width="3"/>
+    <circle cx="96" cy="-48" r="10" fill="#0f172a"/><circle cx="106" cy="-5" r="10" fill="#0f172a"/>
+  </g>
+  <g transform="translate(575,115)">
+    <rect x="-18" y="0" width="36" height="24" rx="5" fill="#cbd5e1"/>
+    <circle cx="0" cy="12" r="6" fill="#0f172a"/>
+    <rect x="-8" y="24" width="16" height="260" fill="#94a3b8"/>
+    <g fill="none" stroke="#0052ff" stroke-width="14" stroke-linecap="round">
+      <path d="M-48 65 L48 90"/><path d="M-48 105 L48 130"/><path d="M-48 145 L48 170"/><path d="M-48 185 L48 210"/><path d="M-48 225 L48 250"/>
+    </g>
+    <rect x="-32" y="235" width="64" height="90" rx="8" fill="#334155" stroke="#cbd5e1" stroke-width="3"/>
+    <rect x="-18" y="325" width="36" height="22" rx="5" fill="#cbd5e1"/>
+    <circle cx="0" cy="336" r="6" fill="#0f172a"/>
+  </g>
+</svg>

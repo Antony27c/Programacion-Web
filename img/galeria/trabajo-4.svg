@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Service 60.000 km con cambio de aceite y filtros en Chevrolet Onix">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#0052ff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0052ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.45"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#grid)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+  <g transform="translate(36,28)">
+    <rect width="42" height="42" rx="6" fill="#0052ff"/>
+    <text x="21" y="27" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="16" text-anchor="middle">BX</text>
+    <text x="56" y="20" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="2">BOXLY · SALTA</text>
+    <text x="56" y="36" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="14">SERVICE 60.000 KM · CHEVROLET ONIX</text>
+  </g>
+  <!-- Bidón de aceite sintético -->
+  <g transform="translate(195,130)">
+    <rect x="28" y="0" width="46" height="24" rx="4" fill="#0052ff"/>
+    <path d="M20 28 h95 l35 45 v195 a16 16 0 0 1 -16 16 h-138 a16 16 0 0 1 -16 -16 v-210 a30 30 0 0 1 30 -30 z" fill="#1e293b" stroke="#cbd5e1" stroke-width="4"/>
+    <rect x="92" y="55" width="34" height="75" rx="8" fill="#0f172a" stroke="#475569" stroke-width="3"/>
+    <rect x="14" y="135" width="110" height="95" rx="8" fill="#0f172a" stroke="#0052ff" stroke-width="2"/>
+    <text x="69" y="172" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="20" text-anchor="middle">5W-30</text>
+    <text x="69" y="196" fill="#38bdf8" font-family="Arial,sans-serif" font-weight="700" font-size="11" text-anchor="middle">SINTÉTICO</text>
+    <path d="M69 204 C61 216 61 224 69 224 C77 224 77 216 69 204 Z" fill="#facc15"/>
+  </g>
+  <!-- Filtro de aceite y checklist -->
+  <g transform="translate(415,180)">
+    <rect width="95" height="150" rx="10" fill="#0052ff" stroke="#e2e8f0" stroke-width="3"/>
+    <rect x="8" y="0" width="79" height="18" fill="#0f172a"/>
+    <line x1="18" y1="45" x2="77" y2="45" stroke="#fff" stroke-width="3"/>
+    <line x1="18" y1="65" x2="77" y2="65" stroke="#38bdf8" stroke-width="2"/>
+    <text x="47" y="105" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="12" text-anchor="middle">FILTRO</text>
+  </g>
+  <g transform="translate(540,165)">
+    <rect width="125" height="180" rx="10" fill="#0f172a" stroke="#10b981" stroke-width="2.5"/>
+    <text x="62" y="34" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="12" text-anchor="middle">CHECKLIST</text>
+    <g fill="#10b981" font-family="Arial,sans-serif" font-weight="700" font-size="12">
+      <text x="18" y="68">✓ Aceite</text>
+      <text x="18" y="96">✓ Filtros (3)</text>
+      <text x="18" y="124">✓ Fluidos</text>
+      <text x="18" y="152">✓ Escaneo</text>
+    </g>
+  </g>
+</svg>

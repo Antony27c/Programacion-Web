@@ -52,7 +52,7 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
           <div class="row g-5">
             <div class="col-lg-7">
-              <div class="bx-placeholder bx-placeholder--tall" role="img" aria-label="Mapa de ubicación en Salta Capital"><i class="bi bi-geo-alt" aria-hidden="true"></i>MAPA · SALTA CAPITAL<br />Av. Bolivia 2450</div>
+              <img class="bx-img" src="img/mapa-salta.svg" width="800" height="500" alt="Mapa de ubicación del taller BOXLY en Av. Bolivia 2450, Salta Capital" />
             </div>
             <div class="col-lg-5">
               <h2 class="h3">Datos de contacto</h2>

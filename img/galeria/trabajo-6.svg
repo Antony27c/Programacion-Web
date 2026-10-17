@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Kit de embrague completo en Fiat Palio">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#0052ff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0052ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.45"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#grid)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+  <g transform="translate(36,28)">
+    <rect width="42" height="42" rx="6" fill="#0052ff"/>
+    <text x="21" y="27" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="16" text-anchor="middle">BX</text>
+    <text x="56" y="20" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="2">BOXLY · SALTA</text>
+    <text x="56" y="36" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="14">KIT DE EMBRAGUE · FIAT PALIO</text>
+  </g>
+  <!-- Placa de presión con diafragma -->
+  <g transform="translate(290,275)">
+    <circle r="140" fill="#1e293b" stroke="#cbd5e1" stroke-width="10"/>
+    <circle r="108" fill="#0f172a" stroke="#0052ff" stroke-width="8"/>
+    <!-- Lengüetas del diafragma -->
+    <g stroke="#94a3b8" stroke-width="6" stroke-linecap="round">
+      <line x1="0" y1="-98" x2="0" y2="-36"/><line x1="0" y1="98" x2="0" y2="36"/>
+      <line x1="-98" y1="0" x2="-36" y2="0"/><line x1="98" y1="0" x2="36" y2="0"/>
+      <line x1="-69" y1="-69" x2="-25" y2="-25"/><line x1="69" y1="-69" x2="25" y2="-25"/>
+      <line x1="-69" y1="69" x2="-25" y2="25"/><line x1="69" y1="69" x2="25" y2="25"/>
+      <line x1="-90" y1="-38" x2="-33" y2="-14"/><line x1="90" y1="-38" x2="33" y2="-14"/>
+      <line x1="-90" y1="38" x2="-33" y2="14"/><line x1="90" y1="38" x2="33" y2="14"/>
+      <line x1="-38" y1="-90" x2="-14" y2="-33"/><line x1="38" y1="-90" x2="14" y2="-33"/>
+      <line x1="-38" y1="90" x2="-14" y2="33"/><line x1="38" y1="90" x2="14" y2="33"/>
+    </g>
+    <circle r="34" fill="#0f172a" stroke="#38bdf8" stroke-width="4"/>
+  </g>
+  <!-- Disco de fricción con resortes -->
+  <g transform="translate(555,275)">
+    <circle r="115" fill="#334155" stroke="#94a3b8" stroke-width="8" stroke-dasharray="22 6"/>
+    <circle r="76" fill="#0f172a" stroke="#cbd5e1" stroke-width="4"/>
+    <g fill="#0052ff" stroke="#e2e8f0" stroke-width="2">
+      <rect x="-12" y="-62" width="24" height="16" rx="4"/>
+      <rect x="-12" y="46" width="24" height="16" rx="4"/>
+      <rect x="-62" y="-12" width="16" height="24" rx="4"/>
+      <rect x="46" y="-12" width="16" height="24" rx="4"/>
+    </g>
+    <circle r="26" fill="#1e293b" stroke="#e2e8f0" stroke-width="5" stroke-dasharray="6 4"/>
+  </g>
+</svg>

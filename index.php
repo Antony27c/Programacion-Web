@@ -23,10 +23,7 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
           <div class="row g-5 align-items-center">
             <div class="col-lg-6">
-              <div class="bx-placeholder bx-placeholder--tall" role="img" aria-label="Foto del taller BOXLY">
-                <i class="bi bi-tools" aria-hidden="true"></i>
-                FOTO TALLER
-              </div>
+              <img class="bx-img" src="img/taller.svg" width="800" height="500" alt="Auto en elevador dentro del taller mecánico BOXLY" />
             </div>
             <div class="col-lg-6">
               <p class="eyebrow">Nosotros</p>

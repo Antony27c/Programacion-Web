@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Equipo técnico de BOXLY">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#0052ff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0052ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.45"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#grid)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+  <g transform="translate(36,28)">
+    <rect width="42" height="42" rx="6" fill="#0052ff"/>
+    <text x="21" y="27" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="16" text-anchor="middle">BX</text>
+    <text x="56" y="20" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="2">BOXLY · SALTA</text>
+    <text x="56" y="36" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="14">EQUIPO TÉCNICO · ETT N° 3139</text>
+  </g>
+  <rect x="110" y="105" width="580" height="150" rx="8" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+  <g stroke="#475569" stroke-width="4" stroke-linecap="round" fill="none">
+    <path d="M150 135 v70 M175 140 v60 M200 145 v50 M225 150 v40"/>
+    <path d="M580 140 h70 M580 165 h55 M580 190 h70 M580 215 h45"/>
+  </g>
+  <g transform="translate(215,155)">
+    <circle cx="65" cy="55" r="34" fill="#cbd5e1"/>
+    <path d="M31 48 Q65 18 99 48 Z" fill="#0052ff"/>
+    <rect x="28" y="45" width="78" height="8" rx="4" fill="#0041cc"/>
+    <path d="M12 230 C12 135 118 135 118 230 Z" fill="#1e3a8a" stroke="#0052ff" stroke-width="2"/>
+    <rect x="46" y="130" width="38" height="95" fill="#0f172a"/>
+    <rect x="24" y="152" width="22" height="12" rx="2" fill="#0052ff"/>
+    <rect x="78" y="155" width="66" height="48" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5"/>
+    <polyline points="86,185 98,175 108,182 122,167 135,172" fill="none" stroke="#10b981" stroke-width="2.5"/>
+  </g>
+  <g transform="translate(445,155)">
+    <circle cx="65" cy="55" r="34" fill="#cbd5e1"/>
+    <path d="M31 48 Q65 18 99 48 Z" fill="#0052ff"/>
+    <rect x="28" y="45" width="78" height="8" rx="4" fill="#0041cc"/>
+    <path d="M12 230 C12 135 118 135 118 230 Z" fill="#1e3a8a" stroke="#0052ff" stroke-width="2"/>
+    <rect x="46" y="130" width="38" height="95" fill="#0f172a"/>
+    <rect x="24" y="152" width="22" height="12" rx="2" fill="#0052ff"/>
+    <g transform="translate(115,120) rotate(20)">
+      <rect x="-5" y="18" width="10" height="85" rx="4" fill="#94a3b8"/>
+      <circle cx="0" cy="14" r="16" fill="none" stroke="#e2e8f0" stroke-width="7"/>
+      <rect x="-6" y="-4" width="12" height="14" fill="#0f172a"/>
+    </g>
+  </g>
+  <g transform="translate(150,405)">
+    <rect width="155" height="42" rx="6" fill="#0f172a" stroke="#334155"/><text x="78" y="26" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="12" text-anchor="middle">TÉCNICOS ETT 3139</text>
+    <rect x="172" width="155" height="42" rx="6" fill="#0f172a" stroke="#334155"/><text x="250" y="26" fill="#38bdf8" font-family="Arial,sans-serif" font-weight="700" font-size="12" text-anchor="middle">PRESUPUESTO CLARO</text>
+    <rect x="344" width="155" height="42" rx="6" fill="#0f172a" stroke="#10b981"/><text x="422" y="26" fill="#10b981" font-family="Arial,sans-serif" font-weight="700" font-size="12" text-anchor="middle">GARANTÍA ESCRITA</text>
+  </g>
+</svg>
