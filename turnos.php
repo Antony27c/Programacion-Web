@@ -1,66 +1,31 @@
 <?php
 // ============================================================
 // turnos.php — Formulario POST: solicitud de turno
-// Sanitización + validación en servidor + persistencia (TP5)
+// Sanitización + validación en servidor (TP5) + persistencia en MySQL (TP7)
 // ============================================================
 require_once __DIR__ . '/includes/funciones.php';
 
-$serviciosValidos = ['Service', 'Frenos', 'Diagnóstico', 'Otro'];
-$horariosValidos  = ['Mañana', 'Tarde'];
+$serviciosValidos = SERVICIOS_TURNO;
+$horariosValidos  = HORARIOS_TURNO;
 
-$datos   = array_fill_keys(['nombre', 'telefono', 'vehiculo', 'servicio', 'fecha', 'horario', 'sintoma'], '');
+$datos   = array_fill_keys(CAMPOS_TURNO, '');
 $errores = [];
 $exito   = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1) Sanitizar TODAS las entradas antes de usarlas
-    foreach ($datos as $campo => $_) {
-        $datos[$campo] = limpiar($_POST[$campo] ?? '');
-    }
+    // 1) Sanitizar y validar en servidor
+    [$datos, $errores] = validarTurno($_POST);
 
-    // 2) Validación en servidor
-    if ($datos['nombre'] === '') {
-        $errores['nombre'] = 'Ingresá tu nombre y apellido.';
-    } elseif (mb_strlen($datos['nombre']) < 3) {
-        $errores['nombre'] = 'El nombre es demasiado corto.';
+    // 2) Guardar con consulta preparada (anti SQL Injection)
+    if ($errores === []) {
+        require_once __DIR__ . '/config/conexion.php';
+        $stmt = $pdo->prepare(
+            'INSERT INTO turnos (nombre, telefono, vehiculo, servicio, fecha, horario, sintoma)
+             VALUES (:nombre, :telefono, :vehiculo, :servicio, :fecha, :horario, :sintoma)'
+        );
+        $stmt->execute($datos);
+        $exito = true;
     }
-
-    if ($datos['telefono'] === '') {
-        $errores['telefono'] = 'Ingresá un teléfono de contacto.';
-    } elseif (!preg_match('/^[0-9+\s()-]{6,20}$/', $datos['telefono'])) {
-        $errores['telefono'] = 'Ingresá un teléfono válido (números, +, espacios o guiones).';
-    }
-
-    if ($datos['vehiculo'] === '') {
-        $errores['vehiculo'] = 'Indicá marca, modelo y año del vehículo.';
-    }
-
-    if (!in_array($datos['servicio'], $serviciosValidos, true)) {
-        $errores['servicio'] = 'Seleccioná un servicio de la lista.';
-    }
-
-    if ($datos['fecha'] === '') {
-        $errores['fecha'] = 'Elegí una fecha.';
-    } else {
-        $fecha = DateTime::createFromFormat('Y-m-d', $datos['fecha']);
-        if (!$fecha || $fecha->format('Y-m-d') !== $datos['fecha']) {
-            $errores['fecha'] = 'La fecha ingresada no es válida.';
-        } elseif ($fecha < new DateTime('today')) {
-            $errores['fecha'] = 'La fecha no puede ser anterior a hoy.';
-        }
-    }
-
-    if (!in_array($datos['horario'], $horariosValidos, true)) {
-        $errores['horario'] = 'Elegí un horario.';
-    }
-
-    if ($datos['sintoma'] === '') {
-        $errores['sintoma'] = 'Contanos qué le pasa al auto.';
-    } elseif (mb_strlen($datos['sintoma']) < 10) {
-        $errores['sintoma'] = 'Describí el problema con más detalle (mínimo 10 caracteres).';
-    }
-
-    $exito = ($errores === []);
 }
 
 $titulo      = 'BOXLY | Agendar turno';
@@ -83,7 +48,7 @@ require __DIR__ . '/includes/header.php';
 
               <?php if ($exito): ?>
                 <div class="alert alert-success" role="status">
-                  <strong>Solicitud enviada correctamente.</strong> Te contactaremos para confirmar el turno.
+                  <strong>Solicitud registrada correctamente.</strong> Te contactaremos para confirmar el turno.
                 </div>
                 <div class="bx-card p-4 mb-4">
                   <h3 class="h5">Resumen de tu solicitud</h3>

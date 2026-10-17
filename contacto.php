@@ -52,20 +52,20 @@ require __DIR__ . '/includes/header.php';
         <div class="container">
           <div class="row g-5">
             <div class="col-lg-7">
-              <div class="bx-placeholder bx-placeholder--tall" role="img" aria-label="Mapa de ubicación en Salta Capital">MAPA · SALTA CAPITAL<br />Av. Bolivia 2450</div>
+              <img class="bx-img" src="img/mapa-salta.svg" width="800" height="500" alt="Mapa de ubicación del taller BOXLY en Av. Bolivia 2450, Salta Capital" />
             </div>
             <div class="col-lg-5">
               <h2 class="h3">Datos de contacto</h2>
-              <dl class="row mb-4">
-                <dt class="col-sm-4" style="color:#0052ff">Dirección</dt>
+              <dl class="bx-dl row mb-4">
+                <dt class="col-sm-4">Dirección</dt>
                 <dd class="col-sm-8">Av. Bolivia 2450, Salta Capital</dd>
-                <dt class="col-sm-4" style="color:#0052ff">Teléfono</dt>
+                <dt class="col-sm-4">Teléfono</dt>
                 <dd class="col-sm-8"><a href="tel:+543875550199">+54 387 555-0199</a></dd>
-                <dt class="col-sm-4" style="color:#0052ff">WhatsApp</dt>
+                <dt class="col-sm-4">WhatsApp</dt>
                 <dd class="col-sm-8"><a href="https://wa.me/5493875550199" rel="noopener noreferrer">+54 9 387 555-0199</a></dd>
-                <dt class="col-sm-4" style="color:#0052ff">Email</dt>
+                <dt class="col-sm-4">Email</dt>
                 <dd class="col-sm-8"><a href="mailto:turnos@boxly.com.ar">turnos@boxly.com.ar</a></dd>
-                <dt class="col-sm-4" style="color:#0052ff">Horario</dt>
+                <dt class="col-sm-4">Horario</dt>
                 <dd class="col-sm-8">Lun–Vie 8–18 · Sáb 8–13</dd>
               </dl>
               <h2 class="h4">Escribinos</h2>

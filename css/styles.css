@@ -29,6 +29,15 @@ body {
   color: var(--bx-text);
   background: var(--bx-bg);
   line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* Footer siempre abajo aunque la página sea corta */
+body > main {
+  flex: 1 0 auto;
 }
 
 img {
@@ -113,6 +122,10 @@ h4,
 
 .bx-navbar .navbar-toggler {
   border-color: rgba(255, 255, 255, 0.35);
+}
+
+.bx-navbar .navbar-toggler:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 82, 255, 0.45);
 }
 
 .bx-navbar .navbar-toggler-icon {
@@ -216,18 +229,44 @@ h4,
   background: var(--bx-bg);
 }
 
+.bx-img {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--bx-border);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.bx-gallery-card > img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
 .bx-placeholder {
-  background: #2c3440;
-  color: var(--bx-muted);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 85% 15%, rgba(0, 82, 255, 0.35), transparent 45%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0 12px, transparent 12px 24px),
+    linear-gradient(160deg, #1e293b 0%, var(--bx-ink) 100%);
+  color: #cbd5e1;
   border-radius: 0.5rem;
   min-height: 16rem;
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   align-items: center;
   justify-content: center;
   font-family: var(--bx-font-display);
   letter-spacing: 0.08em;
   text-align: center;
   padding: 1.5rem;
+}
+
+.bx-placeholder .bi {
+  font-size: 2.75rem;
+  color: var(--bx-accent);
+  line-height: 1;
 }
 
 .bx-placeholder--tall {
@@ -270,11 +309,21 @@ h4,
 }
 
 .bx-card-icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border-radius: 0.35rem;
   background: var(--bx-ink);
+  color: var(--bx-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
   margin-bottom: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.bx-card:hover .bx-card-icon {
+  background: var(--bx-accent);
 }
 
 .bx-card h3 {
@@ -339,6 +388,11 @@ h4,
 
 .bx-form .form-text {
   color: var(--bx-steel);
+}
+
+.bx-dl dt {
+  color: var(--bx-accent);
+  font-weight: 600;
 }
 
 .bx-side-panel {
@@ -499,9 +553,122 @@ h4,
   top: 0.5rem;
 }
 
+/* Admin: tabla de turnos */
+.bx-table thead th {
+  font-family: var(--bx-font-display);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.bx-table .bx-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
 @media (max-width: 991.98px) {
+  .bx-navbar .navbar-collapse {
+    padding-top: 0.75rem;
+  }
+
+  .bx-navbar .nav-link {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.75rem 0.25rem !important;
+  }
+
   .bx-navbar .btn-bx-primary {
     margin-top: 0.75rem;
     width: 100%;
+  }
+
+  /* La tabla del admin pasa a tarjetas apiladas */
+  .bx-table thead {
+    display: none;
+  }
+
+  .bx-table,
+  .bx-table tbody,
+  .bx-table tr,
+  .bx-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .bx-table tr {
+    background: var(--bx-white);
+    border: 1px solid var(--bx-border);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .bx-table > :not(caption) > * > * {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: 0;
+    padding: 0.35rem 0;
+  }
+
+  .bx-table td[data-label] {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.75rem;
+  }
+
+  .bx-table td[data-label]::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--bx-steel);
+    font-size: 0.85rem;
+  }
+
+  .bx-table .bx-actions {
+    justify-content: stretch;
+    padding-top: 0.75rem;
+    margin-top: 0.35rem;
+    border-top: 1px solid var(--bx-border);
+  }
+
+  .bx-table .bx-actions > * {
+    flex: 1;
+  }
+
+  .bx-table .bx-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .bx-section {
+    padding: 3rem 0;
+  }
+
+  .bx-hero {
+    padding: 3.5rem 0 3rem;
+  }
+
+  .bx-page-hero {
+    padding: 2.5rem 0 2rem;
+  }
+
+  .bx-placeholder {
+    min-height: 12rem;
+  }
+
+  .bx-placeholder--tall {
+    min-height: 14rem;
+  }
+
+  .bx-card,
+  .bx-promo {
+    padding: 1.35rem;
+  }
+
+  .bx-form-actions .btn {
+    flex: 1 1 100%;
   }
 }

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Diagnóstico check engine con escáner OBD en Ford Focus">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#0052ff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0052ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.45"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#grid)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+  <g transform="translate(36,28)">
+    <rect width="42" height="42" rx="6" fill="#0052ff"/>
+    <text x="21" y="27" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="16" text-anchor="middle">BX</text>
+    <text x="56" y="20" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="2">BOXLY · SALTA</text>
+    <text x="56" y="36" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="14">DIAGNÓSTICO OBD2 · FORD FOCUS</text>
+  </g>
+  <!-- Pantalla de escáner -->
+  <rect x="170" y="115" width="460" height="310" rx="18" fill="#0f172a" stroke="#475569" stroke-width="6"/>
+  <rect x="195" y="140" width="410" height="235" rx="8" fill="#0b1324" stroke="#0052ff" stroke-width="2"/>
+  <!-- Ícono Check Engine -->
+  <g transform="translate(230,175)" fill="none" stroke="#facc15" stroke-width="4" stroke-linejoin="round">
+    <path d="M20 20 h55 l12 14 h22 v22 h12 v-14 h10 v44 h-10 v-14 h-12 v18 h-72 l-15 -16 v-38 z"/>
+    <line x1="45" y1="8" x2="45" y2="20"/><line x1="30" y1="8" x2="60" y2="8"/>
+  </g>
+  <text x="380" y="200" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="16">LECTURA DE SENSORES</text>
+  <text x="380" y="224" fill="#10b981" font-family="Arial,sans-serif" font-weight="700" font-size="13">✓ Sonda lambda · Parámetros OK</text>
+  <text x="380" y="246" fill="#38bdf8" font-family="Arial,sans-serif" font-weight="700" font-size="13">✓ Presión riel · 3.8 bar</text>
+  <!-- Gráfico de señal -->
+  <polyline points="215,335 255,335 275,290 295,350 320,310 355,310 380,280 405,345 430,320 470,320 495,285 520,340 545,315 585,315" fill="none" stroke="#0052ff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="215" y1="355" x2="585" y2="355" stroke="#1e293b" stroke-width="2"/>
+  <circle cx="355" cy="400" r="9" fill="#10b981"/><circle cx="400" cy="400" r="9" fill="#0052ff"/><circle cx="445" cy="400" r="9" fill="#334155"/>
+</svg>

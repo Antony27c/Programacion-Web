@@ -1,4 +1,47 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img" aria-label="Placeholder BOXLY">
-  <rect width="800" height="500" fill="#2c3440"/>
-  <text x="400" y="250" fill="#9ca3af" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">BOXLY</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Cambio de kit de distribución en Gol Trend">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#0052ff" stop-opacity="0.38"/>
+      <stop offset="100%" stop-color="#0052ff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#334155" stroke-width="1" stroke-opacity="0.45"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect width="800" height="500" fill="url(#grid)"/>
+  <rect width="800" height="500" fill="url(#glow)"/>
+  <g transform="translate(36,28)">
+    <rect width="42" height="42" rx="6" fill="#0052ff"/>
+    <text x="21" y="27" fill="#fff" font-family="Arial,sans-serif" font-weight="700" font-size="16" text-anchor="middle">BX</text>
+    <text x="56" y="20" fill="#94a3b8" font-family="Arial,sans-serif" font-weight="700" font-size="11" letter-spacing="2">BOXLY · SALTA</text>
+    <text x="56" y="36" fill="#e2e8f0" font-family="Arial,sans-serif" font-weight="700" font-size="14">DISTRIBUCIÓN · GOL TREND</text>
+  </g>
+  <!-- Correa dentada y poleas -->
+  <path d="M250 165 C250 110 550 110 550 165 L580 355 C580 415 220 415 220 355 Z" fill="none" stroke="#0052ff" stroke-width="18" stroke-linejoin="round"/>
+  <path d="M250 165 C250 110 550 110 550 165 L580 355 C580 415 220 415 220 355 Z" fill="none" stroke="#e2e8f0" stroke-width="6" stroke-dasharray="6 10"/>
+  <!-- Polea árbol de levas -->
+  <g transform="translate(400,170)">
+    <circle r="58" fill="#0f172a" stroke="#cbd5e1" stroke-width="8"/>
+    <circle r="38" fill="none" stroke="#475569" stroke-width="6" stroke-dasharray="10 8"/>
+    <circle r="14" fill="#0052ff"/>
+  </g>
+  <!-- Polea cigüeñal -->
+  <g transform="translate(295,345)">
+    <circle r="52" fill="#0f172a" stroke="#cbd5e1" stroke-width="8"/>
+    <circle r="22" fill="#334155"/><circle r="9" fill="#38bdf8"/>
+  </g>
+  <!-- Bomba de agua / tensor -->
+  <g transform="translate(505,345)">
+    <circle r="48" fill="#0f172a" stroke="#cbd5e1" stroke-width="8"/>
+    <circle r="18" fill="#10b981"/>
+  </g>
+  <g transform="translate(400,275)">
+    <circle r="24" fill="#1e293b" stroke="#38bdf8" stroke-width="5"/>
+    <circle r="7" fill="#e2e8f0"/>
+  </g>
 </svg>

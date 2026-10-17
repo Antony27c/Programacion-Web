@@ -16,7 +16,7 @@ require __DIR__ . '/includes/header.php';
           <div class="row g-4">
             <div class="col-md-6 col-lg-4">
               <article class="bx-gallery-card">
-                <div class="bx-placeholder" role="img" aria-label="Cambio de kit de distribución">FOTO 1</div>
+                <img src="img/galeria/trabajo-1.svg" width="800" height="500" loading="lazy" alt="Cambio de kit de distribución" />
                 <div class="caption">
                   <h3>Cambio de kit de distribución</h3>
                   <p>Gol Trend</p>
@@ -25,7 +25,7 @@ require __DIR__ . '/includes/header.php';
             </div>
             <div class="col-md-6 col-lg-4">
               <article class="bx-gallery-card">
-                <div class="bx-placeholder" role="img" aria-label="Discos y pastillas delanteras">FOTO 2</div>
+                <img src="img/galeria/trabajo-2.svg" width="800" height="500" loading="lazy" alt="Discos y pastillas delanteras" />
                 <div class="caption">
                   <h3>Discos y pastillas delanteras</h3>
                   <p>Toyota Corolla</p>
@@ -34,7 +34,7 @@ require __DIR__ . '/includes/header.php';
             </div>
             <div class="col-md-6 col-lg-4">
               <article class="bx-gallery-card">
-                <div class="bx-placeholder" role="img" aria-label="Diagnóstico check engine">FOTO 3</div>
+                <img src="img/galeria/trabajo-3.svg" width="800" height="500" loading="lazy" alt="Diagnóstico check engine" />
                 <div class="caption">
                   <h3>Diagnóstico check engine</h3>
                   <p>Ford Focus</p>
@@ -43,7 +43,7 @@ require __DIR__ . '/includes/header.php';
             </div>
             <div class="col-md-6 col-lg-4">
               <article class="bx-gallery-card">
-                <div class="bx-placeholder" role="img" aria-label="Service 60000 km">FOTO 4</div>
+                <img src="img/galeria/trabajo-4.svg" width="800" height="500" loading="lazy" alt="Service 60000 km" />
                 <div class="caption">
                   <h3>Service 60.000 km</h3>
                   <p>Chevrolet Onix</p>
@@ -52,7 +52,7 @@ require __DIR__ . '/includes/header.php';
             </div>
             <div class="col-md-6 col-lg-4">
               <article class="bx-gallery-card">
-                <div class="bx-placeholder" role="img" aria-label="Amortiguadores y alineación">FOTO 5</div>
+                <img src="img/galeria/trabajo-5.svg" width="800" height="500" loading="lazy" alt="Amortiguadores y alineación" />
                 <div class="caption">
                   <h3>Amortiguadores + alineación</h3>
                   <p>Renault Sandero</p>
@@ -61,7 +61,7 @@ require __DIR__ . '/includes/header.php';
             </div>
             <div class="col-md-6 col-lg-4">
               <article class="bx-gallery-card">
-                <div class="bx-placeholder" role="img" aria-label="Embrague completo">FOTO 6</div>
+                <img src="img/galeria/trabajo-6.svg" width="800" height="500" loading="lazy" alt="Embrague completo" />
                 <div class="caption">
                   <h3>Embrague completo</h3>
                   <p>Fiat Palio</p>
