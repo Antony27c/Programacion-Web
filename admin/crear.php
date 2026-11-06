@@ -3,11 +3,13 @@
 // admin/crear.php — Formulario + inserción de turno (Create)
 // ============================================================
 require_once __DIR__ . '/../includes/funciones.php';
+require_once __DIR__ . '/../includes/turnos_db.php';
 require_once __DIR__ . '/../config/conexion.php';
 
-$csrf    = csrfToken();
-$datos   = array_fill_keys(CAMPOS_TURNO, '') + ['estado' => 'Pendiente'];
-$errores = [];
+$csrf      = csrfToken();
+$catalogos = catalogos($pdo);
+$datos     = turnoVacio($catalogos);
+$errores   = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!csrfValido($_POST['csrf'] ?? null)) {
@@ -15,14 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    [$datos, $errores] = validarTurno($_POST, true);
+    [$datos, $errores] = validarTurno($_POST, $catalogos, true);
 
     if ($errores === []) {
-        // Consulta preparada (anti SQL Injection)
-        $sql = 'INSERT INTO turnos (nombre, telefono, vehiculo, servicio, fecha, horario, sintoma, estado)
-                VALUES (:nombre, :telefono, :vehiculo, :servicio, :fecha, :horario, :sintoma, :estado)';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($datos);
+        // Inserción en usuarios/vehiculos/turnos/turno_servicio con consultas preparadas
+        guardarTurno($pdo, $datos, true);
         header('Location: index.php?status=created');
         exit;
     }

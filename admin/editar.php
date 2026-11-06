@@ -3,6 +3,7 @@
 // admin/editar.php — Formulario + actualización de turno (Update)
 // ============================================================
 require_once __DIR__ . '/../includes/funciones.php';
+require_once __DIR__ . '/../includes/turnos_db.php';
 require_once __DIR__ . '/../config/conexion.php';
 
 $esPost = $_SERVER['REQUEST_METHOD'] === 'POST';
@@ -13,19 +14,18 @@ if (!$id) {
     exit;
 }
 
-// Lectura segura del registro a editar
-$stmt = $pdo->prepare('SELECT id, nombre, telefono, vehiculo, servicio, fecha, horario, sintoma, estado FROM turnos WHERE id = :id');
-$stmt->execute([':id' => $id]);
-$turno = $stmt->fetch();
+// Lectura segura del registro a editar (JOIN con usuarios y vehiculos)
+$turno = obtenerTurno($pdo, $id);
 
 if (!$turno) {
     header('Location: index.php?status=notfound');
     exit;
 }
 
-$csrf    = csrfToken();
-$datos   = $turno;
-$errores = [];
+$csrf      = csrfToken();
+$catalogos = catalogos($pdo);
+$datos     = $turno;
+$errores   = [];
 
 if ($esPost) {
     if (!csrfValido($_POST['csrf'] ?? null)) {
@@ -33,15 +33,10 @@ if ($esPost) {
         exit;
     }
 
-    [$datos, $errores] = validarTurno($_POST, true);
+    [$datos, $errores] = validarTurno($_POST, $catalogos, true);
 
     if ($errores === []) {
-        $sql = 'UPDATE turnos
-                SET nombre = :nombre, telefono = :telefono, vehiculo = :vehiculo, servicio = :servicio,
-                    fecha = :fecha, horario = :horario, sintoma = :sintoma, estado = :estado
-                WHERE id = :id';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute($datos + [':id' => $id]);
+        guardarTurno($pdo, $datos, true, $id);
         header('Location: index.php?status=updated');
         exit;
     }

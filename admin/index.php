@@ -3,23 +3,19 @@
 // admin/index.php — Listado de turnos (Read)
 // ============================================================
 require_once __DIR__ . '/../includes/funciones.php';
+require_once __DIR__ . '/../includes/turnos_db.php';
 require_once __DIR__ . '/../config/conexion.php';
 
-$csrf = csrfToken();
+$csrf      = csrfToken();
+$catalogos = catalogos($pdo);
 
-// Filtro opcional por estado (lista blanca + consulta preparada)
+// Filtro opcional por estado (lista blanca contra el catálogo + consulta preparada)
 $filtro = limpiar(filter_input(INPUT_GET, 'estado') ?? '');
-if (!in_array($filtro, ESTADOS_TURNO, true)) {
+if (!enCatalogo($filtro, $catalogos['estados'])) {
     $filtro = '';
 }
 
-$sql = 'SELECT id, nombre, telefono, vehiculo, servicio, fecha, horario, sintoma, estado
-        FROM turnos
-        WHERE (:estado = \'\' OR estado = :estado2)
-        ORDER BY fecha DESC, id DESC';
-$stmt = $pdo->prepare($sql);
-$stmt->execute([':estado' => $filtro, ':estado2' => $filtro]);
-$turnos = $stmt->fetchAll();
+$turnos = listarTurnos($pdo, (int) $filtro);
 
 $mensajes = [
     'created'  => ['success', 'Turno creado correctamente.'],
@@ -63,8 +59,8 @@ require __DIR__ . '/../includes/header.php';
               <label class="visually-hidden" for="estado">Filtrar por estado</label>
               <select class="form-select" id="estado" name="estado">
                 <option value="">Todos los estados</option>
-                <?php foreach (ESTADOS_TURNO as $est): ?>
-                  <option value="<?= e($est) ?>"<?= $filtro === $est ? ' selected' : '' ?>><?= e($est) ?></option>
+                <?php foreach ($catalogos['estados'] as $idEstado => $est): ?>
+                  <option value="<?= e($idEstado) ?>"<?= $filtro === (string) $idEstado ? ' selected' : '' ?>><?= e($est) ?></option>
                 <?php endforeach; ?>
               </select>
               <button class="btn btn-bx-outline-dark" type="submit">Filtrar</button>
@@ -72,7 +68,7 @@ require __DIR__ . '/../includes/header.php';
           </div>
 
           <?php if ($turnos === []): ?>
-            <div class="alert alert-info">No hay turnos registrados<?= $filtro !== '' ? ' con estado «' . e($filtro) . '»' : '' ?>.</div>
+            <div class="alert alert-info">No hay turnos registrados<?= $filtro !== '' ? ' con estado «' . e($catalogos['estados'][(int) $filtro]) . '»' : '' ?>.</div>
           <?php else: ?>
             <div class="table-responsive-lg">
               <table class="table table-striped table-hover align-middle bx-table">
@@ -81,7 +77,7 @@ require __DIR__ . '/../includes/header.php';
                     <th scope="col">ID</th>
                     <th scope="col">Cliente</th>
                     <th scope="col">Vehículo</th>
-                    <th scope="col">Servicio</th>
+                    <th scope="col">Servicios</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Síntoma</th>
                     <th scope="col">Estado</th>
@@ -94,12 +90,22 @@ require __DIR__ . '/../includes/header.php';
                       <td data-label="ID">#<?= e($t['id']) ?></td>
                       <td data-label="Cliente">
                         <span>
-                          <strong><?= e($t['nombre']) ?></strong><br />
+                          <strong><?= e($t['nombre'] . ' ' . $t['apellido']) ?></strong><br />
                           <small class="text-muted text-nowrap"><?= e($t['telefono']) ?></small>
                         </span>
                       </td>
-                      <td data-label="Vehículo"><?= e($t['vehiculo']) ?></td>
-                      <td data-label="Servicio"><?= e($t['servicio']) ?></td>
+                      <td data-label="Vehículo">
+                        <span>
+                          <?= e($t['marca'] . ' ' . $t['modelo'] . ' ' . $t['anio']) ?><br />
+                          <small class="text-muted text-nowrap"><?= e($t['patente']) ?></small>
+                        </span>
+                      </td>
+                      <td data-label="Servicios">
+                        <span>
+                          <?= e($t['servicios'] ?? '—') ?><br />
+                          <small class="text-muted text-nowrap">$ <?= e(number_format((float) $t['total'], 0, ',', '.')) ?></small>
+                        </span>
+                      </td>
                       <td data-label="Fecha" class="text-nowrap"><span><?= e(date('d/m/Y', strtotime($t['fecha']))) ?><br /><small class="text-muted"><?= e($t['horario']) ?></small></span></td>
                       <td data-label="Síntoma" class="small"><?= e(mb_strimwidth($t['sintoma'], 0, 60, '…')) ?></td>
                       <td data-label="Estado"><span><span class="badge <?= e($colores[$t['estado']] ?? 'text-bg-light') ?>"><?= e($t['estado']) ?></span></span></td>

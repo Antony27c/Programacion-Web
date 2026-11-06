@@ -16,11 +16,15 @@ backend en PHP y persistencia en MySQL mediante PDO.
 │   ├── conexion.php                 ← TP7: conexión PDO con try-catch
 │   ├── conexion.local.example.php   ← plantilla de credenciales
 │   └── conexion.local.php           ← credenciales reales (NO se versiona)
-├── database/
-│   └── boxly.sql                    ← TP7: base `boxly` + tabla `turnos` + datos de ejemplo
+├── tp6/                             ← TP6: esquema relacional normalizado
+│   ├── NORMALIZACION.md             ← tabla sin normalizar, 1FN, 2FN, 3FN, PK/FK y diagrama ER
+│   ├── schema.sql                   ← DDL: base `boxly`, 8 tablas, FK, auditoría e índices
+│   └── consultas.sql                ← DML: datos iniciales + SELECT/JOIN, UPDATE y DELETE
 ├── includes/
 │   ├── header.php  footer.php       ← plantilla modular
-│   └── funciones.php                ← sanitización, validación de turnos, CSRF
+│   ├── funciones.php                ← sanitización, validación de turnos, CSRF
+│   ├── turnos_db.php                ← acceso a datos (catálogos, JOINs, alta/edición en transacción)
+│   └── campos_turno.php             ← campos del formulario de turno (sitio y admin)
 ├── admin/                           ← TP7: CRUD de turnos
 │   ├── index.php                    ← listado (Read) + filtro por estado
 │   ├── crear.php                    ← alta (Create)
@@ -57,8 +61,9 @@ backend en PHP y persistencia en MySQL mediante PDO.
 
 ## Cómo correrlo en local
 
-1. **Base de datos:** en MySQL Workbench abrir `database/boxly.sql` (*File → Open SQL Script*) y
-   ejecutarlo. Crea la base `boxly` con la tabla `turnos` y 5 registros de ejemplo.
+1. **Base de datos:** en MySQL Workbench / phpMyAdmin ejecutar, en este orden,
+   `tp6/schema.sql` (crea la base `boxly` y sus tablas) y `tp6/consultas.sql` (carga catálogos,
+   clientes, vehículos y turnos de ejemplo y corre las pruebas CRUD).
 2. **Credenciales:** completar la contraseña de MySQL en `config/conexion.local.php`
    (si no existe, copiar `config/conexion.local.example.php` con ese nombre).
 3. **Servidor:**
@@ -72,10 +77,34 @@ backend en PHP y persistencia en MySQL mediante PDO.
 
 ---
 
+## TP6 — Diseño y creación del esquema relacional en MySQL
+
+Desarrollo completo en [`tp6/NORMALIZACION.md`](tp6/NORMALIZACION.md).
+
+- **Parte 1 — Normalización:** se parte de una planilla de turnos con servicios y precios en
+  una sola celda y datos de cliente/vehículo repetidos, y se lleva a 1FN, 2FN y 3FN.
+- **Parte 2 — [`tp6/schema.sql`](tp6/schema.sql):** 8 tablas InnoDB con PK `AUTO_INCREMENT`,
+  FK con `ON DELETE RESTRICT/CASCADE`, `UNIQUE`, `CHECK`, auditoría `created_at`/`updated_at`
+  e índices explícitos (`CREATE INDEX`) sobre `turnos(fecha)`, `turnos(estado_id, fecha)` y
+  `usuarios(apellido, nombre)`.
+- **Parte 3 — [`tp6/consultas.sql`](tp6/consultas.sql):** `INSERT` en maestras y tabla
+  principal, `SELECT` con `WHERE` + `ORDER BY`, `INNER JOIN` de 5 tablas, `UPDATE` y `DELETE`
+  con `WHERE`.
+
+| Tipo | Tablas |
+|------|--------|
+| Usuarios | `usuarios` (email, password_hash, rol, datos personales) |
+| Maestras | `roles`, `estados_turno`, `marcas`, `servicios` |
+| Negocio | `vehiculos`, `turnos` |
+| Relación N:M | `turno_servicio` (servicios de cada turno con su precio) |
+
+---
+
 ## TP7 — Persistencia y conexión PHP-MySQL segura
 
-Entidad gestionada: **`turnos`** del taller (cliente, teléfono, vehículo, servicio, fecha,
-horario, síntoma y estado). El flujo completo queda integrado al sitio:
+Entidad gestionada: **`turnos`** del taller. Trabaja sobre el esquema normalizado del TP6:
+cada turno referencia a un cliente (`usuarios`), un vehículo (`vehiculos`), un estado
+(`estados_turno`) y uno o más servicios (`turno_servicio`). El flujo completo queda integrado al sitio:
 
 - El cliente pide un turno desde **`turnos.php`** → se valida en servidor y se guarda en MySQL.
 - El taller lo gestiona desde **`admin/`**: lo lista, filtra por estado, edita (p. ej. pasa de
@@ -86,25 +115,15 @@ horario, síntoma y estado). El flujo completo queda integrado al sitio:
 | Requisito | Implementación |
 |-----------|----------------|
 | Conexión segura | `config/conexion.php`: PDO con `ERRMODE_EXCEPTION`, `FETCH_ASSOC`, `EMULATE_PREPARES = false` y `try/catch (PDOException)`. El detalle del error va a `error_log`, no al navegador. Credenciales fuera del repo. |
-| SQL Injection | **Todas** las consultas (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) usan `prepare()` + `execute()` con `:parametros`. El `id` se valida con `FILTER_VALIDATE_INT`. |
+| SQL Injection | **Todas** las consultas (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) usan `prepare()` + `execute()` con parámetros (`includes/turnos_db.php`). Los `id` se validan con `FILTER_VALIDATE_INT`. |
 | XSS | Toda variable impresa pasa por `e()` → `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')`. |
-| Validación | `validarTurno()` en servidor: obligatorios, largo, regex de teléfono, fecha válida y listas blancas para servicio, horario y estado (coinciden con los `ENUM` de la tabla). |
+| Validación | `validarTurno()` en servidor: obligatorios, largo, email, regex de teléfono y patente, año, fecha válida, UTF-8 válido y listas blancas: marca, servicios y estado se validan contra los catálogos de la base. |
+| Integridad | Alta y edición corren en una **transacción** (usuario → vehículo → turno → servicios): si algo falla se hace `rollBack()`. Desde el sitio público un email o patente existentes se reutilizan sin modificar sus datos. |
 | CSRF | Alta, edición y baja exigen un token de sesión (`csrfToken()` / `csrfValido()`). La baja solo acepta `POST`: un link GET no puede borrar registros. |
 
-### Modelo de datos (`database/boxly.sql`)
+### Modelo de datos
 
-| Campo | Tipo |
-|-------|------|
-| `id` | INT UNSIGNED, PK, AUTO_INCREMENT |
-| `nombre` | VARCHAR(120) |
-| `telefono` | VARCHAR(20) |
-| `vehiculo` | VARCHAR(150) |
-| `servicio` | ENUM('Service','Frenos','Diagnóstico','Otro') |
-| `fecha` | DATE (indexado) |
-| `horario` | ENUM('Mañana','Tarde') |
-| `sintoma` | TEXT |
-| `estado` | ENUM('Pendiente','Confirmado','Finalizado','Cancelado') |
-| `creado_en` / `actualizado_en` | TIMESTAMP |
+Ver el esquema completo y el diagrama ER en [`tp6/NORMALIZACION.md`](tp6/NORMALIZACION.md).
 
 ---
 
