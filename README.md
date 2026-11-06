@@ -25,7 +25,8 @@ backend en PHP y persistencia en MySQL mediante PDO.
 │   ├── funciones.php                ← sanitización, validación de turnos, CSRF
 │   ├── turnos_db.php                ← acceso a datos (catálogos, JOINs, alta/edición en transacción)
 │   └── campos_turno.php             ← campos del formulario de turno (sitio y admin)
-├── admin/                           ← TP7: CRUD de turnos
+├── login.php registro.php logout.php mi-cuenta.php   ← TP8: autenticación
+├── admin/                           ← TP7: CRUD de turnos (TP8: solo rol Administrador)
 │   ├── index.php                    ← listado (Read) + filtro por estado
 │   ├── crear.php                    ← alta (Create)
 │   ├── editar.php                   ← modificación (Update)
@@ -97,6 +98,25 @@ Desarrollo completo en [`tp6/NORMALIZACION.md`](tp6/NORMALIZACION.md).
 | Maestras | `roles`, `estados_turno`, `marcas`, `servicios` |
 | Negocio | `vehiculos`, `turnos` |
 | Relación N:M | `turno_servicio` (servicios de cada turno con su precio) |
+
+---
+
+## TP8 — Manejo de estado, sesiones y autenticación
+
+Usuarios sobre la tabla `usuarios` del TP6 (`email` UNIQUE, `password_hash` VARCHAR(255), rol por FK a
+`roles`: *Administrador* / *Cliente*, `created_at`). Admin de prueba: `admin@boxly.com.ar` / `Boxly2026!`.
+
+| Archivo | Función |
+|---------|---------|
+| `registro.php` | Alta de cliente: sanitización (`trim` + `htmlspecialchars` en la salida), validación en servidor, email no repetido y `password_hash($password, PASSWORD_BCRYPT)` con consulta preparada. |
+| `login.php` | `password_verify()` contra el hash; si es correcto `session_regenerate_id(true)` (anti Session Fixation) y guarda `$_SESSION['usuario_id']`, `['usuario_nombre']` y `['rol']`. Admin → `admin/`, cliente → `mi-cuenta.php`. Mensaje de error genérico. |
+| `includes/auth_guard.php` | Guardián reutilizable: sin `$_SESSION['usuario_id']` redirige a `login.php?error=acceso_denegado`; con `$rolesPermitidos` restringe por rol. |
+| `logout.php` | `$_SESSION = []`, borra la cookie de sesión, `session_destroy()` y redirige al login. Solo por POST con token CSRF. |
+| `includes/sesion.php` | Cookie de sesión `HttpOnly`, `SameSite=Lax`, `Secure` bajo HTTPS, `use_strict_mode` y expiración por 30 min de inactividad. |
+
+**Vistas protegidas:** `mi-cuenta.php` (cualquier usuario logueado: sus datos y sus turnos) y todo
+`admin/` (solo rol *Administrador*; un cliente es redirigido con aviso de falta de permisos). Con sesión
+iniciada, `turnos.php` precarga los datos y registra el turno a nombre de la cuenta.
 
 ---
 

@@ -4,8 +4,9 @@
 // Opcionales: $base (prefijo de rutas, '../' desde admin/) y $seccion
 require_once __DIR__ . '/funciones.php';
 
-$base   = $base ?? '';
-$pagina = $seccion ?? basename($_SERVER['PHP_SELF']);
+$base       = $base ?? '';
+$pagina     = $seccion ?? basename($_SERVER['PHP_SELF']);
+$usuarioNav = usuarioActual();
 $nav = function (string $archivo) use ($pagina): string {
     return $archivo === $pagina ? ' active' : '';
 };
@@ -44,7 +45,28 @@ $nav = function (string $archivo) use ($pagina): string {
               <li class="nav-item"><a class="nav-link<?= $nav('turnos.php') ?>" href="<?= e($base) ?>turnos.php">Turnos</a></li>
               <li class="nav-item"><a class="nav-link<?= $nav('galeria.php') ?>" href="<?= e($base) ?>galeria.php">Galería</a></li>
               <li class="nav-item"><a class="nav-link<?= $nav('contacto.php') ?>" href="<?= e($base) ?>contacto.php">Contacto</a></li>
-              <li class="nav-item"><a class="nav-link<?= $nav('admin') ?>" href="<?= e($base) ?>admin/index.php">Admin</a></li>
+              <?php if ($usuarioNav): ?>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle<?= $nav('mi-cuenta.php') . $nav('admin') ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle" aria-hidden="true"></i> <?= e($usuarioNav['nombre']) ?>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="<?= e($base) ?>mi-cuenta.php">Mi cuenta</a></li>
+                    <?php if ($usuarioNav['rol'] === 'Administrador'): ?>
+                      <li><a class="dropdown-item" href="<?= e($base) ?>admin/index.php">Panel de turnos</a></li>
+                    <?php endif; ?>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li>
+                      <form class="m-0" method="post" action="<?= e($base) ?>logout.php">
+                        <input type="hidden" name="csrf" value="<?= e(csrfToken()) ?>" />
+                        <button class="dropdown-item" type="submit"><i class="bi bi-box-arrow-right" aria-hidden="true"></i> Cerrar sesión</button>
+                      </form>
+                    </li>
+                  </ul>
+                </li>
+              <?php else: ?>
+                <li class="nav-item"><a class="nav-link<?= $nav('login.php') ?>" href="<?= e($base) ?>login.php">Ingresar</a></li>
+              <?php endif; ?>
               <li class="nav-item"><a class="btn btn-bx-primary ms-lg-2" href="<?= e($base) ?>turnos.php">Agendar turno</a></li>
             </ul>
           </div>

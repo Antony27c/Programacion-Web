@@ -3,6 +3,8 @@
 // admin/eliminar.php — Eliminación de turno (Delete)
 // Solo acepta POST con token CSRF: un link GET no puede borrar datos.
 // ============================================================
+$rolesPermitidos = ['Administrador']; // TP8: solo administradores
+require __DIR__ . '/../includes/auth_guard.php';
 require_once __DIR__ . '/../includes/funciones.php';
 require_once __DIR__ . '/../config/conexion.php';
 

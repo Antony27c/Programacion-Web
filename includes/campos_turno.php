@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-6">
       <label class="form-label" for="email">Email</label>
-      <input class="form-control<?= claseError($errores, 'email') ?>" id="email" name="email" type="email" maxlength="150" required autocomplete="email" placeholder="nombre@correo.com" value="<?= valor($datos, 'email') ?>" />
+      <input class="form-control<?= claseError($errores, 'email') ?>" id="email" name="email" type="email" maxlength="150" required autocomplete="email" placeholder="nombre@correo.com" value="<?= valor($datos, 'email') ?>"<?= !empty($emailFijo) ? ' readonly' : '' ?> />
       <?= errorCampo($errores, 'email') ?>
     </div>
     <div class="col-md-6">

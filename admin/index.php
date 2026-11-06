@@ -2,6 +2,8 @@
 // ============================================================
 // admin/index.php — Listado de turnos (Read)
 // ============================================================
+$rolesPermitidos = ['Administrador']; // TP8: solo administradores
+require __DIR__ . '/../includes/auth_guard.php';
 require_once __DIR__ . '/../includes/funciones.php';
 require_once __DIR__ . '/../includes/turnos_db.php';
 require_once __DIR__ . '/../config/conexion.php';

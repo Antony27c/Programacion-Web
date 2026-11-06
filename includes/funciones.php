@@ -2,6 +2,7 @@
 // ============================================================
 // funciones.php — Helpers de sanitización y formularios (TP5)
 // ============================================================
+require_once __DIR__ . '/sesion.php';
 
 /**
  * Limpia un valor recibido por GET/POST:
@@ -196,13 +197,11 @@ function enCatalogo(string $valor, array $catalogo): bool
 }
 
 // ============================================================
-// Token CSRF para acciones del panel admin
+// Token CSRF para formularios que modifican datos (admin, login, logout)
 // ============================================================
 function csrfToken(): string
 {
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
+    iniciarSesion();
     return $_SESSION['csrf'] ??= bin2hex(random_bytes(32));
 }
 

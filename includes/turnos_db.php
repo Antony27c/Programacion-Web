@@ -4,8 +4,7 @@
 // normalizado del TP6 (usuarios, vehiculos, turnos, turno_servicio).
 // Todas las consultas usan sentencias preparadas (PDO).
 // ============================================================
-
-const ROL_CLIENTE = 'Cliente';
+require_once __DIR__ . '/usuarios_db.php';
 
 /**
  * Catálogos para selects y listas blancas: ['marcas' => [id => nombre], ...]
@@ -22,9 +21,9 @@ function catalogos(PDO $pdo): array
 
 /**
  * Lista los turnos con cliente, vehículo, estado y servicios (INNER JOIN).
- * $estadoId = 0 lista todos.
+ * $estadoId = 0 lista todos; $usuarioId > 0 limita a los turnos de ese cliente.
  */
-function listarTurnos(PDO $pdo, int $estadoId = 0): array
+function listarTurnos(PDO $pdo, int $estadoId = 0, int $usuarioId = 0): array
 {
     $sql = 'SELECT t.id, t.fecha, t.horario, t.sintoma,
                    u.nombre, u.apellido, u.telefono,
@@ -43,9 +42,10 @@ function listarTurnos(PDO $pdo, int $estadoId = 0): array
             INNER JOIN marcas        m ON m.id = v.marca_id
             INNER JOIN estados_turno e ON e.id = t.estado_id
             WHERE (:estado = 0 OR t.estado_id = :estado2)
+              AND (:usuario = 0 OR t.usuario_id = :usuario2)
             ORDER BY t.fecha DESC, t.id DESC';
     $stmt = $pdo->prepare($sql);
-    $stmt->execute([':estado' => $estadoId, ':estado2' => $estadoId]);
+    $stmt->execute([':estado' => $estadoId, ':estado2' => $estadoId, ':usuario' => $usuarioId, ':usuario2' => $usuarioId]);
     return $stmt->fetchAll();
 }
 

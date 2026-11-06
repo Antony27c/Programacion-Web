@@ -14,9 +14,17 @@ $errores   = [];
 $turnoId   = null;
 $admin     = false;
 
+// TP8: con sesión iniciada se precargan los datos y el turno queda a nombre de la cuenta
+$cuenta    = ($u = usuarioActual()) ? obtenerUsuario($pdo, $u['id']) : null;
+$emailFijo = $cuenta !== null;
+if ($cuenta) {
+    $datos = array_merge($datos, array_intersect_key($cuenta, array_flip(['nombre', 'apellido', 'email', 'telefono'])));
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1) Sanitizar y validar en servidor (listas blancas contra los catálogos)
-    [$datos, $errores] = validarTurno($_POST, $catalogos);
+    $entrada = $cuenta ? ['email' => $cuenta['email']] + $_POST : $_POST;
+    [$datos, $errores] = validarTurno($entrada, $catalogos);
 
     // 2) Guardar con consultas preparadas (anti SQL Injection)
     if ($errores === []) {
