@@ -91,8 +91,9 @@ function validarRegistro(array $entrada): array
         $datos[$campo] = limpiar($entrada[$campo] ?? '');
     }
     $datos['email'] = mb_strtolower($datos['email']);
-    $password  = (string) ($entrada['password'] ?? '');
-    $password2 = (string) ($entrada['password2'] ?? '');
+    // is_scalar: un password[]=x llegaría como array y rompería el casteo
+    $password  = is_scalar($entrada['password'] ?? null) ? (string) $entrada['password'] : '';
+    $password2 = is_scalar($entrada['password2'] ?? null) ? (string) $entrada['password2'] : '';
     $errores   = [];
 
     foreach (['nombre' => 'tu nombre', 'apellido' => 'tu apellido'] as $campo => $texto) {
@@ -100,6 +101,9 @@ function validarRegistro(array $entrada): array
             $errores[$campo] = "Ingresá $texto.";
         } elseif (mb_strlen($datos[$campo]) < 2 || mb_strlen($datos[$campo]) > 60) {
             $errores[$campo] = 'Debe tener entre 2 y 60 caracteres.';
+        } elseif (!preg_match("/^[\p{L}\s'.-]+$/u", $datos[$campo])) {
+            // Lista blanca: solo letras, espacios, apóstrofo, punto y guion (sin < > ni etiquetas)
+            $errores[$campo] = 'Usá solo letras, espacios o guiones.';
         }
     }
     if ($datos['email'] === '') {

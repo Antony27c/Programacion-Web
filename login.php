@@ -18,7 +18,8 @@ $error = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email    = mb_strtolower(limpiar($_POST['email'] ?? ''));
-    $password = (string) ($_POST['password'] ?? '');
+    // is_scalar: un password[]=x llegaría como array y rompería el casteo
+    $password = is_scalar($_POST['password'] ?? null) ? (string) $_POST['password'] : '';
 
     if (!csrfValido($_POST['csrf'] ?? null)) {
         $error = 'La sesión del formulario expiró. Volvé a intentarlo.';
