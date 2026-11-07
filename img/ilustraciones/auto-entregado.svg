@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" aria-label="Auto entregado con carita feliz y sello de verificacion">
+  <rect width="480" height="320" fill="#FFFFFF"/>
+  <ellipse cx="240" cy="185" rx="225" ry="120" fill="#E8F0FF"/>
+  <rect x="0" y="300" width="480" height="20" fill="#CBD5E1" fill-opacity="0.2"/>
+
+  <!-- sombra -->
+  <ellipse cx="240" cy="272" rx="150" ry="10" fill="#0F172A" fill-opacity="0.1"/>
+
+  <!-- auto (perfil, mas compacto) -->
+  <g>
+    <path d="M70 236C70 228 76 223 86 221l13-11c5-6 12-9 20-9h58c10 0 19 5 25 12l12 10c17 3 31 7 35 15v5c0 4-3 7-7 7H76c-3 0-6-3-6-7v-1Z" fill="#0F172A"/>
+    <path d="M150 201h56l8 10H144l6-10Z" fill="#E8F0FF"/>
+    <path d="M202 201v10" stroke="#0F172A" stroke-width="3.5"/>
+    <path d="M206 216v22" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="2.5"/>
+    <!-- carita feliz en la ventanilla -->
+    <circle cx="168" cy="208" r="2.4" fill="#0F172A"/>
+    <circle cx="184" cy="208" r="2.4" fill="#0F172A"/>
+    <path d="M166 214q6 5 12 0" fill="none" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/>
+    <rect x="212" y="222" width="14" height="4" rx="2" fill="#0052FF"/>
+    <ellipse cx="340" cy="234" rx="6" ry="4.5" fill="#FFFFFF"/>
+    <rect x="68" y="232" width="8" height="5" rx="2.5" fill="#CBD5E1"/>
+    <circle cx="140" cy="252" r="19" fill="#0F172A"/>
+    <circle cx="140" cy="252" r="9.5" fill="#CBD5E1"/>
+    <circle cx="140" cy="252" r="4" fill="#0052FF"/>
+    <circle cx="300" cy="252" r="19" fill="#0F172A"/>
+    <circle cx="300" cy="252" r="9.5" fill="#CBD5E1"/>
+    <circle cx="300" cy="252" r="4" fill="#0052FF"/>
+  </g>
+
+  <!-- sello verde de entrega -->
+  <circle cx="368" cy="96" r="30" fill="#10B981"/>
+  <path d="M352 96l11 11 19-21" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- destellos de celebracion -->
+  <g fill="#0052FF">
+    <path d="M84 92l2.2 5.8 5.8 2.2-5.8 2.2-2.2 5.8-2.2-5.8-5.8-2.2 5.8-2.2z"/>
+    <path d="M420 160l1.7 4.4 4.4 1.7-4.4 1.7-1.7 4.4-1.7-4.4-4.4-1.7 4.4-1.7z"/>
+  </g>
+  <path d="M110 150l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z" fill="#10B981"/>
+  <circle cx="392" cy="220" r="4.5" fill="#CBD5E1"/>
+  <circle cx="60" cy="200" r="4" fill="#CBD5E1"/>
+</svg>
