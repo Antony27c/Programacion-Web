@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" role="img" aria-label="Lupa sobre una lista vacia, sin resultados">
+  <rect width="480" height="320" fill="#FFFFFF"/>
+  <ellipse cx="235" cy="165" rx="215" ry="115" fill="#E8F0FF"/>
+
+  <!-- tarjeta de lista vacia -->
+  <rect x="105" y="72" width="235" height="160" rx="14" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="3" stroke-dasharray="9 7"/>
+  <g stroke="#CBD5E1" stroke-width="7" stroke-linecap="round">
+    <path d="M132 108h120"/>
+    <path d="M132 138h88"/>
+    <path d="M132 168h132"/>
+    <path d="M132 196h64"/>
+  </g>
+  <circle cx="300" cy="196" r="9" fill="none" stroke="#CBD5E1" stroke-width="4"/>
+
+  <!-- lupa -->
+  <g transform="translate(315 118)">
+    <circle cx="0" cy="0" r="62" fill="#E8F0FF" fill-opacity="0.65" stroke="#0052FF" stroke-width="9"/>
+    <path d="M44 44 84 84" stroke="#0052FF" stroke-width="12" stroke-linecap="round"/>
+    <!-- auto fantasma dentro del cristal -->
+    <g transform="translate(-14 16) scale(0.5)" fill="none" stroke="#CBD5E1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 22h52l8-10c2-3 6-4 10-4h10c4 0 8 2 10 5l6 9v8H10z"/>
+      <circle cx="24" cy="30" r="6"/>
+      <circle cx="58" cy="30" r="6"/>
+    </g>
+  </g>
+
+  <!-- destellos -->
+  <path d="M96 60l2 5.4 5.4 2-5.4 2-2 5.4-2-5.4-5.4-2 5.4-2z" fill="#0052FF"/>
+  <path d="M392 52l1.6 4.2 4.2 1.6-4.2 1.6-1.6 4.2-1.6-4.2-4.2-1.6 4.2-1.6z" fill="#10B981"/>
+  <circle cx="70" cy="140" r="4" fill="#CBD5E1"/>
+  <circle cx="428" cy="250" r="5" fill="#CBD5E1"/>
+</svg>

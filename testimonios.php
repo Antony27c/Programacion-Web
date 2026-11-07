@@ -2,60 +2,41 @@
 $titulo      = 'BOXLY | Testimonios';
 $descripcion = 'Opiniones de clientes del taller BOXLY en Salta.';
 require __DIR__ . '/includes/header.php';
+
+$opiniones = [
+    ['Laura M.', 'Service + frenos', 'Me explicaron todo sin tecnicismos y el auto quedó impecable.', ''],
+    ['Diego R.', 'Diagnóstico', 'Presupuesto claro y cumplieron el plazo. Volvería sin dudar.', 'bx-avatar--amber'],
+    ['Ana P.', 'Ruido en el motor', 'Encontraron la falla rápido y me mostraron la pieza.', 'bx-avatar--green'],
+    ['Carlos V.', 'Service', 'Buen trato, precio justo y taller ordenado.', ''],
+    ['Sofía L.', 'Suspensión', 'Me dieron opciones de repuesto según mi presupuesto.', 'bx-avatar--amber'],
+    ['Martín G.', 'Embrague', 'Trabajo prolijo y entrega cuando dijeron.', 'bx-avatar--green'],
+];
+// Iniciales para el avatar: "Laura M." -> "LM"
+$iniciales = fn (string $nombre): string => implode('', array_map(fn ($p) => mb_substr($p, 0, 1), explode(' ', $nombre)));
 ?>
     <main id="contenido">
       <section class="bx-page-hero">
         <div class="container">
           <p class="eyebrow">Testimonios</p>
-          <h1>Opiniones reales</h1>
-          <p>Clientes de Salta que ya pasaron por el taller.</p>
+          <h1>Opiniones de clientes</h1>
+          <p>Clientes de Salta que ya pasaron por el taller y nos dejaron su comentario.</p>
         </div>
       </section>
-      <section class="bx-section bx-section-white">
+      <section class="bx-section bx-section-muted">
         <div class="container">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <blockquote class="bx-quote">
-                <p class="mb-2" aria-label="5 estrellas">★★★★★</p>
-                <p>“Me explicaron todo sin tecnicismos y el auto quedó impecable.”</p>
-                <cite>Laura M. · Service + frenos</cite>
-              </blockquote>
-            </div>
-            <div class="col-md-6">
-              <blockquote class="bx-quote">
-                <p class="mb-2" aria-label="5 estrellas">★★★★★</p>
-                <p>“Presupuesto claro y cumplieron el plazo. Volvería sin dudar.”</p>
-                <cite>Diego R. · Diagnóstico</cite>
-              </blockquote>
-            </div>
-            <div class="col-md-6">
-              <blockquote class="bx-quote">
-                <p class="mb-2" aria-label="5 estrellas">★★★★★</p>
-                <p>“Encontraron la falla rápido y me mostraron la pieza.”</p>
-                <cite>Ana P. · Ruido motor</cite>
-              </blockquote>
-            </div>
-            <div class="col-md-6">
-              <blockquote class="bx-quote">
-                <p class="mb-2" aria-label="5 estrellas">★★★★★</p>
-                <p>“Buen trato, precio justo y taller ordenado.”</p>
-                <cite>Carlos V. · Service</cite>
-              </blockquote>
-            </div>
-            <div class="col-md-6">
-              <blockquote class="bx-quote">
-                <p class="mb-2" aria-label="5 estrellas">★★★★★</p>
-                <p>“Me dieron opciones de repuesto según presupuesto.”</p>
-                <cite>Sofía L. · Suspensión</cite>
-              </blockquote>
-            </div>
-            <div class="col-md-6">
-              <blockquote class="bx-quote">
-                <p class="mb-2" aria-label="5 estrellas">★★★★★</p>
-                <p>“Trabajo prolijo y entrega cuando dijeron.”</p>
-                <cite>Martín G. · Embrague</cite>
-              </blockquote>
-            </div>
+          <div class="row g-4">
+            <?php foreach ($opiniones as [$nombre, $servicio, $texto, $color]): ?>
+              <div class="col-md-6 col-lg-4 bx-reveal">
+                <blockquote class="bx-quote">
+                  <p class="bx-stars" role="img" aria-label="5 de 5 estrellas">★★★★★</p>
+                  <p>“<?= e($texto) ?>”</p>
+                  <footer>
+                    <span class="bx-avatar <?= e($color) ?>" aria-hidden="true"><?= e($iniciales($nombre)) ?></span>
+                    <cite><?= e($nombre) ?><small><?= e($servicio) ?></small></cite>
+                  </footer>
+                </blockquote>
+              </div>
+            <?php endforeach; ?>
           </div>
         </div>
       </section>
