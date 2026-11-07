@@ -7,10 +7,15 @@ require_once __DIR__ . '/sesion.php';
 /**
  * Limpia un valor recibido por GET/POST:
  * quita espacios al inicio/fin y lo devuelve como string plano.
+ * Si llega un array (ej: nombre[]=x) se descarta: evita el aviso
+ * "Array to string conversion" y que el campo pase como "Array".
  */
 function limpiar($valor): string
 {
-    return trim((string) ($valor ?? ''));
+    if (!is_scalar($valor)) {
+        return '';
+    }
+    return trim((string) $valor);
 }
 
 /**

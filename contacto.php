@@ -33,6 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores['mensaje'] = 'El mensaje es muy corto (mínimo 10 caracteres).';
     }
 
+    // Longitud máxima y codificación válida (htmlspecialchars devuelve '' ante UTF-8 inválido)
+    foreach (['nombre' => 60, 'email' => 150, 'mensaje' => 2000] as $campo => $max) {
+        if (!mb_check_encoding($datos[$campo], 'UTF-8')) {
+            $errores[$campo] = 'Contiene caracteres no válidos.';
+        } elseif (!isset($errores[$campo]) && mb_strlen($datos[$campo]) > $max) {
+            $errores[$campo] = "No puede superar los $max caracteres.";
+        }
+    }
+
     $exito = ($errores === []);
 }
 
