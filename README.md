@@ -9,6 +9,39 @@ backend en PHP y persistencia en MySQL mediante PDO.
 - **Mockups Figma:** https://www.figma.com/design/1MKE3Skw1MhIkSsq2L2091/Taller-Mecanico-Mockups-UI-UX-TP3
 - **Versión estática (TP4) en GitHub Pages:** https://antony27c.github.io/Programacion-Web/entregas/tp4-html/
 
+## Trabajos prácticos
+
+Cada TP tiene su propio README con el objetivo según el enunciado, lo implementado, los archivos
+principales, cómo probarlo y las pruebas realizadas. La columna *Rama* indica dónde quedó el trabajo
+de cada TP: los iniciales (TP3 a TP5) en `main` y el resto en su rama `feature/tpN-...`; los README de
+TP9 y TP10 se enlazan a sus ramas.
+
+| TP   | Tema                                              | Rama                  | README |
+|------|---------------------------------------------------|-----------------------|--------|
+| TP3  | Diseño UX: wireframe y mockups en Figma           | `main`                | [`docs/tp3/README.md`](docs/tp3/README.md) |
+| TP4  | Maquetación estática HTML5 + Bootstrap            | `main`                | [`entregas/tp4-html/README.md`](entregas/tp4-html/README.md) |
+| TP5  | Formularios POST/GET y seguridad web              | `main`                | [`docs/tp5/README.md`](docs/tp5/README.md) |
+| TP6  | Esquema relacional en MySQL                       | `feature/tp6-esquema` | [`docs/tp6/README.md`](docs/tp6/README.md) |
+| TP7  | Persistencia PDO y CRUD de turnos                 | `feature/tp7-crud`    | [`docs/tp7/README.md`](docs/tp7/README.md) |
+| TP8  | Sesiones, autenticación y roles                   | `feature/tp8-auth`    | [`docs/tp8/README.md`](docs/tp8/README.md) |
+| TP9  | Comunicación asincrónica AJAX + JSON              | `feature/tp9-ajax`    | [`docs/tp9/README.md`](https://github.com/Antony27c/Programacion-Web/blob/feature/tp9-ajax/docs/tp9/README.md) |
+| TP10 | Refactor MVC y módulo en Laravel                  | `feature/tp10-mvc`    | [`docs/tp10/README.md`](https://github.com/Antony27c/Programacion-Web/blob/feature/tp10-mvc/docs/tp10/README.md) · [`tp10-laravel/README.md`](https://github.com/Antony27c/Programacion-Web/blob/feature/tp10-mvc/tp10-laravel/README.md) |
+
+- **TP3** — Wireframe y mockups UI/UX de las vistas del sitio en Figma (`docs/tp3/`).
+- **TP4** — Maquetación estática de las 10 vistas en HTML5 + Bootstrap 5 con auditoría Lighthouse (`entregas/tp4-html/`).
+- **TP5** — Sitio en PHP con estructura modular: formularios POST (turnos, contacto, presupuesto) y GET
+  (buscador de servicios), con sanitización anti-XSS y validación en servidor.
+- **TP6** — Modelo relacional del taller normalizado (1FN a 3FN): 8 tablas InnoDB con PK, FK, índices
+  y auditoría; `tp6/schema.sql` + `tp6/consultas.sql` y el análisis en `tp6/NORMALIZACION.md`.
+- **TP7** — Conexión PDO segura con `try/catch` y CRUD de turnos integrado al sitio (`admin/`),
+  con consultas preparadas, transacciones y protección CSRF.
+- **TP8** — Registro, login y logout con sesiones seguras (`HttpOnly`, `SameSite`, regeneración de id),
+  `password_hash`/`password_verify` y control de acceso por roles (Administrador / Cliente).
+- **TP9** — Endpoints JSON en `api/` consumidos con Fetch API: búsqueda de servicios en vivo,
+  consulta pública del estado de un turno y cambio de estado desde el panel admin, todo sin recargar la página.
+- **TP10** — Refactor del módulo de turnos a arquitectura MVC nativa en `app/` (Models, Controllers,
+  Views con PHP puro) y módulo de catálogo de servicios en Laravel 12 dentro de `tp10-laravel/`.
+
 ## Estructura
 
 ```
@@ -38,8 +71,9 @@ backend en PHP y persistencia en MySQL mediante PDO.
 ├── entregas/
 │   └── tp4-html/                    ← TP4: sitio estático HTML + auditoría Lighthouse
 └── docs/
-    ├── tp3/                         ← wireframe, informe TP3 y mockups Figma
-    └── tp5/screenshots/             ← capturas TP5
+    ├── tp3/                         ← README, wireframe, informe TP3 y mockups Figma
+    ├── tp5/                         ← README, cumplimiento y capturas (screenshots/) del TP5
+    └── tp6/  tp7/  tp8/             ← README y cumplimiento de cada TP
 ```
 
 ## Tecnología
