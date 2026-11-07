@@ -3,8 +3,7 @@
 // login.php — Inicio de sesión (TP8)
 // password_verify() contra el hash de la BD + session_regenerate_id(true)
 // ============================================================
-require_once __DIR__ . '/includes/funciones.php';
-require_once __DIR__ . '/includes/usuarios_db.php';
+require_once __DIR__ . '/app/bootstrap.php'; // funciones, usuarios_db y conexión PDO (TP10)
 
 $destino = fn (string $rol): string => $rol === ROL_ADMIN ? 'admin/index.php' : 'mi-cuenta.php';
 
@@ -26,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($email === '' || $password === '') {
         $error = 'Completá el email y la contraseña.';
     } else {
-        require_once __DIR__ . '/config/conexion.php';
+        $pdo = App\Core\Database::conexion();
         $usuario = autenticar($pdo, $email, $password);
         if ($usuario) {
             abrirSesion($usuario);
