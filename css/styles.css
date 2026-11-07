@@ -1915,3 +1915,427 @@ main:has(> section:last-child.bx-section-sand) + .bx-cta-section {
     padding-top: 3rem;
   }
 }
+
+/* ============================================================
+   20. Fase 2 — Catálogo de servicios y solicitud de turnos
+   ============================================================ */
+
+/* Buscador del catálogo */
+.bx-search {
+  background: var(--bx-white);
+  border: 1px solid var(--bx-border);
+  border-radius: var(--bx-radius-surface);
+  box-shadow: var(--bx-shadow-sm);
+  padding: 1.25rem 1.4rem;
+}
+
+.bx-search-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.bx-search-field {
+  position: relative;
+  flex: 1 1 18rem;
+}
+
+.bx-search-field .bi {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--bx-text-soft);
+  pointer-events: none;
+}
+
+.bx-form .bx-search-field .form-control {
+  padding-left: 2.6rem;
+}
+
+.bx-search-count {
+  font-weight: 600;
+  color: var(--bx-text-soft);
+  margin: 0 0 1rem;
+}
+
+/* Estado vacío (búsqueda sin resultados, 404) */
+.bx-empty {
+  max-width: 34rem;
+  margin: 0 auto 1rem;
+  text-align: center;
+  background: var(--bx-white);
+  border: 1px dashed var(--bx-border-field);
+  border-radius: var(--bx-radius-surface);
+  padding: 2rem 1.5rem 2.25rem;
+}
+
+.bx-empty img {
+  width: 100%;
+  max-width: 18rem;
+  margin: 0 auto 1rem;
+}
+
+.bx-empty p {
+  color: var(--bx-text-soft);
+}
+
+/* Tarjeta de servicio del catálogo */
+.bx-servicio {
+  display: flex;
+  flex-direction: column;
+}
+
+.bx-servicio-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.bx-card .bx-servicio-precio,
+.bx-servicio-precio {
+  margin: 0;
+  text-align: right;
+  font-family: var(--bx-font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--bx-ink);
+  line-height: 1.2;
+}
+
+.bx-servicio-precio small {
+  display: block;
+  font-family: var(--bx-font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bx-text-soft);
+}
+
+.bx-servicio h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
+.bx-servicio-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.bx-servicio-acciones .btn {
+  flex: 1 1 auto;
+}
+
+@media (hover: hover) {
+  .bx-servicio:hover {
+    border-color: var(--bx-blue-100);
+    box-shadow: var(--bx-shadow-lg);
+  }
+
+  .bx-servicio:hover .bx-card-icon {
+    background: var(--bx-blue);
+    color: var(--bx-white);
+  }
+}
+
+/* Ruta de navegación */
+.bx-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: var(--bx-text-soft);
+}
+
+.bx-breadcrumb li + li::before {
+  content: "\f285"; /* bi-chevron-right */
+  font-family: "bootstrap-icons";
+  font-size: 0.7rem;
+  margin-right: 0.4rem;
+}
+
+.bx-breadcrumb a {
+  font-weight: 600;
+}
+
+.bx-price-desde {
+  display: block;
+  font-family: var(--bx-font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bx-text-soft);
+}
+
+/* Formulario por pasos */
+.bx-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  list-style: none;
+  padding: 0 0 1.25rem;
+  margin: 0 0 1.5rem;
+  border-bottom: 1px solid var(--bx-border);
+  color: var(--bx-text-soft);
+  font-weight: 600;
+  font-size: 0.925rem;
+}
+
+.bx-stepper li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bx-stepper span,
+.bx-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  background: var(--bx-blue-50);
+  color: var(--bx-blue-700);
+  font-family: var(--bx-font-display);
+  font-weight: 800;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.bx-form .bx-form-step legend {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bx-form .bx-form-step legend .bx-step-num {
+  background: var(--bx-ink);
+  color: var(--bx-white);
+}
+
+.bx-req {
+  color: var(--bx-danger);
+  font-weight: 700;
+}
+
+/* Servicios como tarjetas seleccionables (checkbox real, oculto a la vista) */
+.bx-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.75rem;
+  border-radius: 1rem;
+}
+
+.bx-choices.is-invalid {
+  outline: 2px solid var(--bx-danger);
+  outline-offset: 6px;
+}
+
+.bx-choice {
+  position: relative;
+}
+
+.bx-choice-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.bx-choice-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  height: 100%;
+  cursor: pointer;
+  background: var(--bx-white);
+  border: 1.5px solid var(--bx-border-field);
+  border-radius: 1rem;
+  padding: 0.95rem 1rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.2s ease;
+}
+
+.bx-choice-card .bx-card-icon {
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 0.8rem;
+  margin: 0;
+}
+
+.bx-choice-card .bx-card-icon .bx-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.bx-choice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.bx-choice-text strong {
+  color: var(--bx-ink);
+  font-weight: 600;
+}
+
+.bx-choice-text small {
+  color: var(--bx-text-soft);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.bx-choice-precio {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--bx-blue-700);
+}
+
+.bx-choice-check {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--bx-border-field);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  font-size: 0.9rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.bx-choice-card:hover {
+  border-color: var(--bx-blue);
+}
+
+.bx-choice-input:focus-visible + .bx-choice-card {
+  border-color: var(--bx-blue);
+  box-shadow: var(--bx-ring);
+}
+
+.bx-choice-input:checked + .bx-choice-card {
+  border-color: var(--bx-blue);
+  background: var(--bx-blue-50);
+}
+
+.bx-choice-input:checked + .bx-choice-card .bx-card-icon {
+  background: var(--bx-blue);
+  color: var(--bx-white);
+}
+
+.bx-choice-input:checked + .bx-choice-card .bx-choice-check {
+  background: var(--bx-blue);
+  border-color: var(--bx-blue);
+  color: var(--bx-white);
+}
+
+.bx-choices.is-invalid .bx-choice-card {
+  border-color: var(--bx-danger);
+}
+
+/* Éxito de la solicitud */
+.bx-success-card {
+  border-top: 4px solid var(--bx-success);
+}
+
+.bx-success-card img {
+  width: 100%;
+  max-width: 16rem;
+  margin-inline: auto;
+}
+
+.bx-turno-num {
+  color: var(--bx-blue-700);
+  white-space: nowrap;
+}
+
+/* Lista de datos en dos columnas (resumen y consulta) */
+.bx-resumen {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.bx-resumen > div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px dashed var(--bx-border);
+}
+
+.bx-resumen > div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.bx-resumen dt {
+  font-weight: 600;
+  color: var(--bx-text-soft);
+  font-size: 0.9rem;
+}
+
+.bx-resumen dd {
+  margin: 0;
+  color: var(--bx-ink);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.bx-resumen--compacto > div {
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* Resultado de «Consultá tu turno» */
+.bx-turno-card {
+  background: var(--bx-white);
+  border: 1px solid var(--bx-border);
+  border-left: 4px solid var(--bx-blue);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  box-shadow: var(--bx-shadow-sm);
+}
+
+.bx-turno-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+  color: var(--bx-ink);
+}
+
+@media (max-width: 575.98px) {
+  .bx-resumen > div {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+
+  .bx-search {
+    padding: 1rem;
+  }
+
+  .bx-search-row .btn {
+    flex: 1 1 auto;
+  }
+
+  .bx-stepper {
+    gap: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}

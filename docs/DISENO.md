@@ -172,27 +172,37 @@ tiene formas redondeadas y amables y Inter es muy legible en pantallas chicas.
 | Nosotros con colores inline | Misión/visión/valores en tarjetas del sistema y sección de pasos. |
 | Sin favicon | `img/favicon.svg`. |
 
-## 8. Pendientes para la fase 2 (rama integrada)
+## 8. Fase 2 — páginas de la rama integrada
 
-Estas páginas no se tocaron en esta fase porque cambian en otras ramas; ya heredan el nuevo estilo
-desde el CSS, pero quedan mejoras de marcado:
+Con TP9 y TP10 ya integrados, llevé el mismo sistema a las páginas que faltaban:
 
-- **`servicios.php`**: 5 de 6 botones "Ver detalle" vuelven a la misma página; el catálogo está fijo en
-  el código y no coincide con la tabla `servicios` de la BD (TP9 ya lo lee de la BD). Usar
-  `.bx-card-link` con íconos `.bx-icon--*` y la ilustración `img/ilustraciones/estado-vacio.svg` para
-  "sin resultados".
-- **`turnos.php`**: ocultar el formulario después de un envío exitoso (usar `auto-entregado.svg`),
-  envolver el formulario en `.bx-form-card`, horarios del panel con `.bx-hours`, `min` de fecha en
-  `includes/campos_turno.php` y marcar el grupo de servicios como un todo en vez de cada checkbox.
-- **`login.php` / `registro.php`**: botón para mostrar la contraseña y requisitos de contraseña en vivo.
-- **`admin/*`**: barra de filtros dentro de una tarjeta y conteo por estado.
-- Opcional: datos estructurados `LocalBusiness` y metas Open Graph.
+- **Servicios (`servicios.php`, `servicio-detalle.php`, `js/servicios.js`)**: el catálogo sale de la
+  tabla `servicios` (modelo `Servicio`), cada tarjeta tiene ícono, precio "desde" y dos acciones
+  ("Sacar turno" y "Ver detalle"). El detalle se busca por `id` y responde 404 amigable si no existe.
+  La búsqueda en vivo arma las tarjetas con el mismo diseño y usa `estado-vacio.svg` sin resultados.
+- **Turnos (`turnos.php`, `app/Views/turnos/solicitar.php`, `_campos.php`, `js/turnos.js`)**: formulario
+  en tres pasos (tus datos, vehículo, turno), servicios como tarjetas seleccionables, fecha con `min`
+  de hoy, obligatorios marcados y, al enviar, un mensaje de éxito con `auto-entregado.svg` que reemplaza
+  al formulario. La consulta de estado de TP9 muestra el resultado en una tarjeta con badge.
+- **Cuenta (`login.php`, `registro.php`, `mi-cuenta.php`, `css/auth.css`, `js/auth.js`)**: diseño en dos
+  columnas con panel ilustrado, botón para mostrar la contraseña (`aria-pressed`), requisitos de
+  contraseña en vivo y "Mi cuenta" con tarjeta de perfil y estado vacío con llamada a la acción.
+- **Panel de administración (`app/Views/turnos/index.php`, `form.php`, `css/admin.css`,
+  `js/admin-turnos.js`)**: saludo y acción "Nuevo turno", tarjetas con el conteo por estado, filtros
+  como pills, tabla con selector de estado coloreado (cambio por AJAX con toast), acciones con íconos,
+  versión móvil en tarjetas y formulario de alta/edición en secciones.
+- **Módulo Laravel (`tp10-laravel/resources/views`, `tp10-laravel/public/css/boxly.css`)**: las vistas
+  Blade usan los mismos tokens, tipografía y componentes, con aviso "Módulo Laravel — TP10".
+
+Las hojas propias de cada sección se cargan con la variable `$estilos` que recorre `includes/header.php`.
+
+Queda como mejora opcional: datos estructurados `LocalBusiness` y metas Open Graph.
 
 ## 9. Cómo verlo
 
 ```bash
-php -S localhost:8110
+php -S localhost:8099
 ```
 
-Abrir <http://localhost:8110>. Para revisar el modo sin animaciones, activar "reducir movimiento" en el
+Abrir <http://localhost:8099>. Para revisar el modo sin animaciones, activar "reducir movimiento" en el
 sistema operativo o en las DevTools (Rendering → `prefers-reduced-motion`).

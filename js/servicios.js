@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const contenedor = document.getElementById("resultados-servicios");
   const urlApi = new URL(form.dataset.api, window.location.href);
   const urlTurnos = form.dataset.turnos;
+  const urlDetalle = form.dataset.detalle;
   const formatoPrecio = new Intl.NumberFormat("es-AR", { maximumFractionDigits: 0 });
   const ESPERA_MS = 250;
 
@@ -38,6 +39,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return valor > 0 ? `$ ${formatoPrecio.format(valor)}` : "A cotizar";
   }
 
+  // Ícono según el nombre del servicio (misma tabla que Servicio::icono() en PHP)
+  const ICONOS = [
+    ["fren", "frenos"], ["suspens", "suspension"], ["amortig", "suspension"],
+    ["alinea", "alineacion"], ["diagn", "diagnostico"], ["escan", "diagnostico"],
+    ["bater", "bateria"], ["electr", "bateria"], ["aire", "aire"],
+    ["neum", "neumaticos"], ["cubiert", "neumaticos"], ["service", "aceite"], ["aceite", "aceite"],
+  ];
+  function icono(nombre) {
+    const texto = String(nombre).toLowerCase();
+    const par = ICONOS.find(([clave]) => texto.includes(clave));
+    return par ? par[1] : "presupuesto";
+  }
+
   // Reemplaza el contenido del área aria-live por una alerta (o la vacía).
   function mostrarEstado(tipo, texto) {
     if (!tipo) {
@@ -47,21 +61,63 @@ document.addEventListener("DOMContentLoaded", () => {
     estado.replaceChildren(crear("div", `alert alert-${tipo}`, texto));
   }
 
+  // Link con texto oculto para lectores de pantalla ("Ver detalle de Frenos")
+  function crearBoton(clases, href, texto, oculto, claseIcono) {
+    const boton = crear("a", clases);
+    boton.href = href;
+    if (claseIcono) {
+      const i = crear("i", `bi ${claseIcono}`);
+      i.setAttribute("aria-hidden", "true");
+      boton.append(i, " ");
+    }
+    boton.append(texto, crear("span", "visually-hidden", oculto));
+    return boton;
+  }
+
   function crearTarjeta(servicio) {
-    const tarjeta = crear(
-      "article",
-      "bx-service-row d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3"
+    const columna = crear("div", "col-md-6 col-lg-4");
+    const tarjeta = crear("article", "bx-card bx-servicio");
+    const valor = Number(servicio.precio_base);
+
+    const arriba = crear("div", "bx-servicio-top");
+    const caja = crear("span", "bx-card-icon");
+    caja.setAttribute("aria-hidden", "true");
+    caja.append(crear("span", `bx-icon bx-icon--${icono(servicio.nombre)}`));
+    const etiquetaPrecio = crear("p", "bx-servicio-precio");
+    if (valor > 0) {
+      etiquetaPrecio.append(crear("small", "", "Desde"), " ");
+    }
+    etiquetaPrecio.append(precio(valor));
+    arriba.append(caja, etiquetaPrecio);
+
+    const acciones = crear("div", "bx-servicio-acciones");
+    acciones.append(
+      crearBoton("btn btn-bx-primary btn-sm", `${urlTurnos}?servicio=${encodeURIComponent(servicio.id)}`, "Sacar turno", ` para ${servicio.nombre}`, "bi-calendar-check"),
+      crearBoton("btn btn-bx-outline-dark btn-sm", `${urlDetalle}?id=${encodeURIComponent(servicio.id)}`, "Ver detalle", ` de ${servicio.nombre}`)
     );
-    const cuerpo = crear("div");
-    cuerpo.append(
-      crear("h2", "h4 mb-1", servicio.nombre),
-      crear("p", "mb-1 text-secondary", servicio.descripcion),
-      crear("p", "mb-0 fw-semibold", precio(Number(servicio.precio_base)))
+
+    tarjeta.append(arriba, crear("h2", "h4", servicio.nombre), crear("p", "", servicio.descripcion), acciones);
+    columna.append(tarjeta);
+    return columna;
+  }
+
+  // Estado vacío con ilustración y salida hacia el presupuesto
+  function crearVacio(termino) {
+    const caja = crear("div", "bx-empty");
+    caja.setAttribute("role", "status");
+    const img = crear("img");
+    img.src = "img/ilustraciones/estado-vacio.svg";
+    img.width = 480;
+    img.height = 320;
+    img.alt = "";
+    const boton = crearBoton("btn btn-bx-primary", "presupuesto.php", "Pedir presupuesto", "", "bi-file-earmark-text");
+    caja.append(
+      img,
+      crear("h2", "h4", `No encontramos servicios para «${termino}»`),
+      crear("p", "", "Probá con otra palabra o contanos el problema y te pasamos un presupuesto."),
+      boton
     );
-    const boton = crear("a", "btn btn-bx-primary flex-shrink-0", "Pedir turno");
-    boton.href = urlTurnos;
-    tarjeta.append(cuerpo, boton);
-    return tarjeta;
+    return caja;
   }
 
   function mostrarResultados(termino, servicios) {
@@ -69,9 +125,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (termino === "") {
       mostrarEstado(null);
     } else if (servicios.length > 0) {
-      mostrarEstado("success", `${servicios.length} resultado(s) para «${termino}».`);
+      const contador = crear("p", "bx-search-count", `${servicios.length} resultado(s) para «${termino}».`);
+      contador.setAttribute("role", "status");
+      estado.replaceChildren(contador);
     } else {
-      mostrarEstado("danger", `No encontramos servicios para «${termino}». Probá con otra palabra.`);
+      estado.replaceChildren(crearVacio(termino));
     }
   }
 

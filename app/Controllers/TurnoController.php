@@ -46,6 +46,7 @@ class TurnoController extends Controller
             'titulo'      => 'BOXLY | Administración de turnos',
             'descripcion' => 'Panel de gestión de turnos del taller BOXLY.',
             'turnos'      => $this->turnos->listar((int) $filtro),
+            'conteos'     => $this->turnos->contarPorEstado(),
             'filtro'      => $filtro,
             'status'      => self::MENSAJES[filter_input(INPUT_GET, 'status') ?? ''] ?? null,
             'scripts'     => ['js/admin-turnos.js'], // TP9: cambio de estado con fetch
@@ -178,6 +179,7 @@ class TurnoController extends Controller
         return $datos + [
             'base'      => '../',
             'seccion'   => 'admin',
+            'estilos'   => ['css/admin.css'], // estilos propios del panel
             'csrf'      => csrfToken(),
             'catalogos' => $this->catalogos,
             'horarios'  => Turno::HORARIOS,

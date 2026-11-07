@@ -1,0 +1,545 @@
+/* ============================================================
+   admin.css — Panel de administración de turnos (rediseño fase 2)
+   Usa los tokens y componentes de css/styles.css (ver docs/DISENO.md):
+   solo agrega lo propio del panel. Se carga desde TurnoController
+   con la variable $estilos.
+   ============================================================ */
+
+/* ---------- Encabezado del panel ---------- */
+.bx-admin-hero {
+  padding: 2.75rem 0 2.5rem;
+}
+
+.bx-admin-hero h1 {
+  margin-bottom: 0.4rem;
+}
+
+.bx-volver {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--bx-blue-700);
+  text-decoration: none;
+}
+
+.bx-volver:hover {
+  text-decoration: underline;
+}
+
+.bx-admin-body {
+  padding: 2.5rem 0 4rem;
+}
+
+/* ---------- Tarjetas resumen por estado ---------- */
+.bx-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0 0 1.75rem;
+}
+
+.bx-stat {
+  --tono: var(--bx-blue-700);
+  --tono-bg: var(--bx-blue-50);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 0.9rem;
+  align-items: center;
+  background: var(--bx-white);
+  border: 1px solid var(--bx-border);
+  border-radius: var(--bx-radius-surface);
+  box-shadow: var(--bx-shadow-sm);
+  padding: 1.1rem 1.2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Franja de color arriba: refuerza el estado sin depender solo del color (hay texto) */
+.bx-stat::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--tono);
+  opacity: 0.85;
+}
+
+.bx-stat-icon {
+  grid-row: span 2;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: var(--tono);
+  background: var(--tono-bg);
+}
+
+.bx-stat-num {
+  font-family: var(--bx-font-display);
+  font-weight: 800;
+  font-size: 1.75rem;
+  line-height: 1.1;
+  color: var(--bx-ink);
+}
+
+.bx-stat-label {
+  color: var(--bx-text-soft);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Mismos pares de color que los badges de estado (contraste AA, ver DISENO.md) */
+.bx-stat--pendiente { --tono: #78350f; --tono-bg: #fef3c7; }
+.bx-stat--confirmado { --tono: var(--bx-blue-700); --tono-bg: var(--bx-blue-50); }
+.bx-stat--finalizado { --tono: #065f46; --tono-bg: #d1fae5; }
+.bx-stat--cancelado { --tono: #334155; --tono-bg: #e2e8f0; }
+.bx-stat--total { --tono: var(--bx-ink); --tono-bg: var(--bx-bg); }
+
+/* ---------- Tarjeta contenedora del listado ---------- */
+.bx-admin-card {
+  background: var(--bx-white);
+  border: 1px solid var(--bx-border);
+  border-radius: var(--bx-radius-surface);
+  box-shadow: var(--bx-shadow-md);
+  overflow: hidden;
+}
+
+.bx-admin-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--bx-border);
+}
+
+/* ---------- Filtros en píldoras ---------- */
+.bx-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.4rem 0.6rem 0.4rem 1rem;
+  border: 1.5px solid var(--bx-border);
+  border-radius: 999px;
+  background: var(--bx-white);
+  color: var(--bx-text);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none !important; /* los links del sitio van subrayados; la píldora ya se distingue por su forma */
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.bx-chip:hover {
+  border-color: var(--bx-blue-100);
+  background: var(--bx-blue-50);
+  color: var(--bx-blue-700);
+}
+
+.bx-chip:focus-visible {
+  outline: 0;
+  box-shadow: var(--bx-ring);
+}
+
+.bx-chip.active {
+  background: var(--bx-ink);
+  border-color: var(--bx-ink);
+  color: var(--bx-white);
+}
+
+.bx-chip-num {
+  min-width: 1.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: var(--bx-bg);
+  color: var(--bx-text-soft);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.bx-chip.active .bx-chip-num {
+  background: rgba(255, 255, 255, 0.16);
+  color: var(--bx-white);
+}
+
+/* ---------- Tabla ---------- */
+/* Dentro de la tarjeta la tabla no lleva su propio borde ni el encabezado redondeado */
+.bx-admin-card .table-responsive-lg:has(> .bx-table) {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+.bx-admin-table thead.table-dark {
+  --bs-table-bg: var(--bx-bg);
+  --bs-table-color: var(--bx-text-soft);
+  --bs-table-border-color: var(--bx-border);
+}
+
+.bx-admin-table thead th {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  border-radius: 0 !important;
+}
+
+.bx-admin-table td {
+  border-color: var(--bx-border);
+}
+
+.bx-col-id {
+  font-variant-numeric: tabular-nums;
+}
+
+.bx-col-sintoma {
+  max-width: 18rem;
+  color: var(--bx-text-soft);
+}
+
+.bx-patente {
+  display: inline-block;
+  margin-top: 0.2rem;
+  padding: 0.05rem 0.45rem;
+  border: 1px solid var(--bx-border-field);
+  border-radius: 0.35rem;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--bx-ink);
+  background: var(--bx-white);
+}
+
+/* Select de estado (TP9) con aspecto de píldora */
+.bx-estado-select {
+  min-height: 2.25rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding-left: 0.9rem;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+}
+
+.bx-estado-select:focus {
+  border-color: var(--bx-blue);
+  box-shadow: var(--bx-ring);
+}
+
+.bx-estado-select:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+/* ---------- Acciones con ícono ---------- */
+.bx-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  border: 1.5px solid var(--bx-border);
+  border-radius: var(--bx-radius-control);
+  background: var(--bx-white);
+  color: var(--bx-ink);
+  font-weight: 600;
+}
+
+.bx-btn-icon:hover,
+.bx-btn-icon:focus-visible {
+  border-color: var(--bx-blue);
+  background: var(--bx-blue-50);
+  color: var(--bx-blue-700);
+}
+
+.bx-btn-icon--danger {
+  color: var(--bx-danger);
+}
+
+.bx-btn-icon--danger:hover,
+.bx-btn-icon--danger:focus-visible {
+  border-color: var(--bx-danger);
+  background: var(--bx-danger-50);
+  color: var(--bx-danger);
+}
+
+/* En escritorio solo el ícono (el texto queda para lectores de pantalla y el tooltip lo muestra) */
+@media (min-width: 992px) {
+  .bx-accion-texto {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+}
+
+.bx-btn-danger {
+  background: var(--bx-danger);
+  border-color: var(--bx-danger);
+  color: var(--bx-white);
+  font-weight: 600;
+  border-radius: var(--bx-radius-control);
+}
+
+.bx-btn-danger:hover,
+.bx-btn-danger:focus-visible {
+  background: #991b1b;
+  border-color: #991b1b;
+  color: var(--bx-white);
+}
+
+/* ---------- Estado vacío ---------- */
+.bx-empty {
+  text-align: center;
+  padding: 3rem 1.5rem 3.5rem;
+}
+
+.bx-empty img {
+  display: block;
+  max-width: 200px;
+  height: auto;
+  margin: 0 auto 1.25rem;
+}
+
+.bx-empty p {
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+/* ---------- Modal de baja ---------- */
+.bx-modal .modal-content {
+  border: 0;
+  border-radius: var(--bx-radius-surface);
+  box-shadow: var(--bx-shadow-lg);
+}
+
+.bx-modal .modal-body {
+  padding: 2rem 2rem 1rem;
+}
+
+.bx-modal .modal-footer {
+  border-top: 0;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 2rem 1.75rem;
+}
+
+.bx-modal-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--bx-danger);
+  background: var(--bx-danger-50);
+}
+
+/* ---------- Avisos (toasts) del cambio de estado ---------- */
+.bx-toast {
+  border: 1px solid var(--bx-border);
+  border-left: 4px solid var(--tono, var(--bx-blue));
+  border-radius: var(--bx-radius-control);
+  background: var(--bx-white);
+  color: var(--bx-text);
+  box-shadow: var(--bx-shadow-lg);
+}
+
+.bx-toast .toast-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.9rem 0.5rem 0.9rem 1rem;
+  font-weight: 500;
+}
+
+.bx-toast .toast-body .bi {
+  color: var(--tono, var(--bx-blue));
+  font-size: 1.15rem;
+  line-height: 1.3;
+}
+
+.bx-toast--success { --tono: var(--bx-success); }
+.bx-toast--danger { --tono: var(--bx-danger); }
+
+/* ---------- Formulario de alta / edición ---------- */
+.bx-admin-form-wrap {
+  max-width: 980px;
+}
+
+.bx-admin-form-intro {
+  background: var(--bx-blue-50);
+  border-radius: var(--bx-radius-control);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.25rem;
+  color: var(--bx-ink-2);
+  font-size: 0.95rem;
+}
+
+.bx-admin-form-intro .bi {
+  color: var(--bx-blue-700);
+}
+
+/* Cada fieldset de _campos.php se ve como una sección en tarjeta */
+.bx-admin-form fieldset {
+  background: var(--bx-white);
+  border: 1px solid var(--bx-border);
+  border-radius: var(--bx-radius-surface);
+  box-shadow: var(--bx-shadow-sm);
+  padding: 1.5rem 1.5rem 1.75rem;
+  margin-bottom: 1.25rem !important;
+}
+
+.bx-admin-form fieldset:has(.is-invalid) {
+  border-color: #fca5a5;
+}
+
+.bx-admin-form legend {
+  float: left;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bx-admin-form legend + * {
+  clear: both;
+}
+
+.bx-error-resumen ul {
+  padding-left: 1.2rem;
+}
+
+.bx-error-resumen a {
+  color: inherit;
+  font-weight: 600;
+}
+
+/* Barra de acciones al pie del formulario */
+.bx-admin-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--bx-white);
+  border: 1px solid var(--bx-border);
+  border-radius: var(--bx-radius-surface);
+  box-shadow: var(--bx-shadow-sm);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1199.98px) {
+  .bx-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 991.98px) {
+  .bx-admin-card {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .bx-admin-card-head {
+    padding: 0 0 1.25rem;
+    border-bottom: 0;
+  }
+
+  .bx-empty {
+    background: var(--bx-white);
+    border: 1px solid var(--bx-border);
+    border-radius: var(--bx-radius-surface);
+  }
+
+  /* Tarjeta de cada turno: el ID arriba como título */
+  .bx-admin-table tbody td.bx-col-id {
+    display: block;
+    font-family: var(--bx-font-display);
+    font-size: 1.05rem;
+    color: var(--bx-ink);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.3rem;
+    border-bottom: 1px solid var(--bx-border) !important;
+  }
+
+  .bx-admin-table tbody td.bx-col-id::before {
+    content: "Turno ";
+    font: inherit;
+    color: inherit;
+  }
+
+  .bx-col-sintoma {
+    max-width: none;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .bx-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .bx-stat--total {
+    grid-column: 1 / -1;
+  }
+
+  .bx-stat {
+    padding: 0.9rem 1rem;
+  }
+
+  .bx-stat-num {
+    font-size: 1.45rem;
+  }
+
+  .bx-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    margin-inline: -0.75rem;
+    padding-inline: 0.75rem;
+    scrollbar-width: thin;
+  }
+
+  .bx-chip {
+    white-space: nowrap;
+  }
+
+  .bx-admin-hero .btn-lg {
+    width: 100%;
+  }
+
+  .bx-admin-form fieldset {
+    padding: 1.1rem 1rem 1.25rem;
+  }
+
+  /* En móvil la acción principal queda arriba y ambos botones ocupan todo el ancho */
+  .bx-admin-form-actions {
+    flex-direction: column-reverse;
+  }
+}

@@ -43,23 +43,34 @@ document.addEventListener("DOMContentLoaded", () => {
     return dia && mes && anio ? `${dia}/${mes}/${anio}` : String(iso);
   }
 
-  function mostrarTurno(turno) {
-    const tarjeta = crear("div", "alert alert-info mb-0");
-    const titulo = crear("p", "fw-semibold mb-2", `Turno N° ${turno.id}: `);
-    titulo.append(crear("span", "badge text-bg-dark", turno.estado));
+  // Badge de color por estado (mismo criterio que la vista solicitar.php)
+  const CLASES_ESTADO = {
+    Pendiente: "text-bg-warning",
+    Confirmado: "text-bg-primary",
+    Finalizado: "text-bg-success",
+    Cancelado: "text-bg-secondary",
+  };
 
-    const lista = crear("dl", "row small mb-0");
+  function mostrarTurno(turno) {
+    const tarjeta = crear("div", "bx-turno-card");
+    const cabecera = crear("div", "bx-turno-card-head");
+    const titulo = crear("p", "mb-0", "Turno ");
+    titulo.append(crear("strong", "", `N° ${turno.id}`));
+    cabecera.append(titulo, crear("span", `badge ${CLASES_ESTADO[turno.estado] || "text-bg-secondary"}`, turno.estado));
+
+    const lista = crear("dl", "bx-resumen bx-resumen--compacto mb-0");
     const filas = [
       ["Vehículo", `${turno.vehiculo} (${turno.patente})`],
       ["Fecha", `${fecha(turno.fecha)} (${turno.horario})`],
       ["Servicios", turno.servicios.length ? turno.servicios.join(", ") : "—"],
     ];
-    filas.forEach(([etiqueta, valor], i) => {
-      const ultima = i === filas.length - 1;
-      lista.append(crear("dt", "col-5", etiqueta), crear("dd", ultima ? "col-7 mb-0" : "col-7", valor));
+    filas.forEach(([etiqueta, valor]) => {
+      const fila = crear("div");
+      fila.append(crear("dt", "", etiqueta), crear("dd", "", valor));
+      lista.append(fila);
     });
 
-    tarjeta.append(titulo, lista);
+    tarjeta.append(cabecera, lista);
     resultado.replaceChildren(tarjeta);
   }
 

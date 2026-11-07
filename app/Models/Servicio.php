@@ -37,6 +37,53 @@ class Servicio extends Model
     }
 
     /**
+     * Un servicio por id (consulta preparada) o null si no existe.
+     */
+    public function buscarPorId(int $id): ?array
+    {
+        $stmt = $this->pdo->prepare('SELECT id, nombre, descripcion, precio_base FROM servicios WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        $s = $stmt->fetch();
+
+        return $s ? [
+            'id'          => (int) $s['id'],
+            'nombre'      => $s['nombre'],
+            'descripcion' => (string) $s['descripcion'],
+            'precio_base' => (float) $s['precio_base'],
+        ] : null;
+    }
+
+    /**
+     * Ícono de img/iconos/ según el nombre del servicio (solo presentación).
+     * La misma tabla está replicada en js/servicios.js para la búsqueda en vivo.
+     */
+    public static function icono(string $nombre): string
+    {
+        $nombre = mb_strtolower($nombre);
+        $mapa = [
+            'fren'       => 'frenos',
+            'suspens'    => 'suspension',
+            'amortig'    => 'suspension',
+            'alinea'     => 'alineacion',
+            'diagn'      => 'diagnostico',
+            'escan'      => 'diagnostico',
+            'bater'      => 'bateria',
+            'electr'     => 'bateria',
+            'aire'       => 'aire',
+            'neum'       => 'neumaticos',
+            'cubiert'    => 'neumaticos',
+            'service'    => 'aceite',
+            'aceite'     => 'aceite',
+        ];
+        foreach ($mapa as $clave => $icono) {
+            if (str_contains($nombre, $clave)) {
+                return $icono;
+            }
+        }
+        return 'presupuesto';
+    }
+
+    /**
      * Valida el término de búsqueda. Devuelve el mensaje de error o null si es válido.
      */
     public static function errorBusqueda(string $q): ?string

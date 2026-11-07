@@ -52,6 +52,24 @@ class Turno extends Model
     }
 
     /**
+     * Cantidad de turnos por estado para las tarjetas resumen del panel.
+     * Devuelve [estado_id => cantidad] con todos los estados del catálogo
+     * (los que no tienen turnos aparecen con 0 gracias al LEFT JOIN).
+     */
+    public function contarPorEstado(): array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT e.id, COUNT(t.id) AS cantidad
+             FROM estados_turno e
+             LEFT JOIN turnos t ON t.estado_id = e.id
+             GROUP BY e.id
+             ORDER BY e.id'
+        );
+        $stmt->execute();
+        return array_map('intval', $stmt->fetchAll(PDO::FETCH_KEY_PAIR));
+    }
+
+    /**
      * Devuelve un turno con la misma forma que los datos del formulario
      * (valores como string) o null si no existe.
      */

@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\Catalogo;
+use App\Models\Servicio;
 use App\Models\Turno;
 use App\Models\Usuario;
 use PDOException;
@@ -28,6 +29,13 @@ class SolicitudTurnoController extends Controller
         $cuenta = ($u = usuarioActual()) ? (new Usuario())->obtener($u['id']) : null;
         if ($cuenta) {
             $datos = array_merge($datos, array_intersect_key($cuenta, array_flip(['nombre', 'apellido', 'email', 'telefono'])));
+        }
+
+        // Presentación: ?servicio=N (desde el catálogo) deja ese servicio tildado al entrar.
+        // Solo precarga el formulario; al enviar se valida igual contra el catálogo.
+        $preseleccion = filter_input(INPUT_GET, 'servicio', FILTER_VALIDATE_INT);
+        if (!$this->esPost() && $preseleccion && isset($catalogos['servicios'][$preseleccion])) {
+            $datos['servicios'] = [(string) $preseleccion];
         }
 
         if ($this->esPost()) {
@@ -90,6 +98,9 @@ class SolicitudTurnoController extends Controller
             'consulta'        => $consulta,
             'consultaError'   => $consultaError,
             'scripts'         => ['js/turnos.js'],
+            // Presentación de las tarjetas de servicios (descripción, precio e ícono)
+            'serviciosDetalle' => array_column((new Servicio())->buscar(), null, 'id'),
+            'fechaMinima'      => date('Y-m-d'),
         ]);
     }
 }
