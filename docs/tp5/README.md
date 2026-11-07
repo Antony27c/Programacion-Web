@@ -76,3 +76,35 @@ La auditoría completa requisito por requisito está en
 [`CUMPLIMIENTO.md`](CUMPLIMIENTO.md) y las capturas en
 [`screenshots/`](screenshots/) (también enlazadas desde el
 [README principal](../../README.md)).
+
+## Capturas
+
+Formularios procesados en servidor con sanitización y validación (nuevas capturas del sitio
+integrado; las originales de la auditoría siguen en [`screenshots/`](screenshots/)).
+
+![POST con errores de validación](capturas/post-errores.png)
+
+*POST a `contacto.php` con email inválido y mensaje corto: errores por campo y valores
+persistidos en el formulario.*
+
+![POST exitoso](capturas/post-exito.png)
+
+*POST correcto: `alert-success` confirmando el envío.*
+
+![GET con resultados](capturas/get-busqueda.png)
+
+*`servicios.php?q=frenos`: catálogo filtrado en servidor con `filter_input` + `mb_stripos`.*
+
+![GET sin resultados](capturas/get-sin-resultados.png)
+
+*`servicios.php?q=xys`: mensaje de "sin resultados".*
+
+![XSS escapado en GET](capturas/xss-get.png)
+
+*`servicios.php?q=<script>alert(1)</script>`: el script se imprime escapado en el input y en el
+mensaje, nunca se ejecuta.*
+
+![XSS escapado en POST](capturas/xss-post.png)
+
+*POST a `contacto.php` con `<script>` en el nombre: al volver con errores, el valor se reimprime
+escapado con `e()` (`htmlspecialchars`).*

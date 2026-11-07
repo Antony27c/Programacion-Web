@@ -65,3 +65,20 @@ https://www.figma.com/design/1MKE3Skw1MhIkSsq2L2091/Taller-Mecanico-Mockups-UI-U
 
 Estos diseños fueron la base de la maquetación estática del
 [TP4](../../entregas/tp4-html/README.md) y del sitio PHP actual.
+
+## Capturas
+
+Wireframe de baja fidelidad y mockups de alta fidelidad exportados desde Figma (el resto de
+pantallas y componentes están en [`mockups/`](mockups/)).
+
+![Wireframe general del sitio](wireframe-figma-taller.png)
+
+*Wireframe del sitio: estructura y distribución de contenido de todas las vistas.*
+
+![Mockup de la home](<mockups/01 - Home.png>)
+
+*Mockup de la home con la identidad BOXLY (paleta y tipografías definidas).*
+
+![Mockup de agendar turno](<mockups/05 - Agendar Turno.png>)
+
+*Mockup de la vista de solicitud de turno, base del formulario implementado en PHP.*

@@ -86,3 +86,42 @@ solicitud.
   `crear.php`/`editar.php` (200), `eliminar.php` rechaza GET y POST sin token CSRF, y
   `turnos.php` rechaza POST sin token / acepta con token (alta y baja de prueba
   verificadas en la base).
+
+## Capturas
+
+CRUD de turnos integrado al sitio: formulario público + panel de administración.
+
+![Listado de turnos del admin](capturas/admin-listado.png)
+
+*`admin/`: tabla con `INNER JOIN` (cliente, vehículo, marca, estado, servicios y total).*
+
+![Filtro por estado](capturas/admin-filtro.png)
+
+*`admin/?estado=2`: solo los turnos en estado *Confirmado* (lista blanca + consulta preparada).*
+
+![Formulario de alta](capturas/admin-crear.png)
+
+*`admin/crear.php`: alta de turno con catálogos de la base y validación en servidor.*
+
+![Formulario de edición](capturas/admin-editar.png)
+
+*`admin/editar.php?id=1`: formulario precargado con los datos del turno.*
+
+![Solicitud pública de turno](capturas/turnos-form.png)
+
+*`turnos.php`: el cliente pide su turno desde el sitio; se guarda con consultas preparadas dentro
+de una transacción.*
+
+![Turno creado](capturas/admin-alta.png)
+
+*Alta desde el panel: el turno "Prueba Captura" queda registrado (`status=created`) con su
+usuario, vehículo y servicios en la base.*
+
+![Confirmación de baja](capturas/admin-baja-confirmacion.png)
+
+*Antes de borrar, el panel pide confirmación en un modal con los datos del turno.*
+
+![Turno eliminado](capturas/admin-baja.png)
+
+*Baja por `POST` + token CSRF (nunca por GET): `status=deleted` y el turno desaparece del
+listado.*

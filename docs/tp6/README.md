@@ -74,3 +74,30 @@ Datos de prueba y validación CRUD sobre el esquema:
   `servicios.precio_base`, los turnos ya cargados no se modifican.
 - **`ON DELETE RESTRICT`** en las FK principales para no perder clientes, vehículos,
   servicios ni estados que tengan turnos asociados.
+
+## Capturas
+
+El esquema no se puede "ver" desde el sitio, así que las capturas muestran la salida real de
+`mysql` sobre la base `boxly` (renderizada desde consola).
+
+![Tablas de la base boxly](capturas/tablas.png)
+
+*`SHOW TABLES`: las 8 tablas del modelo normalizado.*
+
+![Estructura de la tabla turnos](capturas/estructura-turnos.png)
+
+*`DESCRIBE turnos`: columnas, tipos, PK y claves de la tabla principal.*
+
+![Claves foráneas de turnos](capturas/claves-foraneas.png)
+
+*FK de `turnos` hacia `usuarios`, `vehiculos` y `estados_turno`, leídas de
+`information_schema.KEY_COLUMN_USAGE`.*
+
+![Consulta con JOINs](capturas/consulta-join.png)
+
+*Agenda completa: `SELECT` con `INNER JOIN` de 5 tablas (turnos + cliente + vehículo + marca +
+estado), de `tp6/consultas.sql`.*
+
+![Servicios y total por turno](capturas/consulta-totales.png)
+
+*JOIN con la tabla N:M `turno_servicio`: servicios de cada turno y `SUM` del total.*

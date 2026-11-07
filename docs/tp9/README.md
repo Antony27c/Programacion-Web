@@ -246,3 +246,35 @@ node --check js/servicios.js         # sin errores
 node --check js/turnos.js
 node --check js/admin-turnos.js
 ```
+
+## Capturas
+
+Las tres interacciones AJAX del sitio: búsqueda en vivo, consulta pública de turno y cambio de
+estado desde el panel, todas sin recargar la página.
+
+![Búsqueda en vivo de servicios](capturas/busqueda-vivo.png)
+
+*Escribir «frenos» en `servicios.php`: evento `input` → debounce → `fetch` a
+`api/buscar_servicios.php` → las tarjetas se reemplazan sin recargar.*
+
+![Respuesta JSON de la API](capturas/busqueda-json.png)
+
+*`GET api/buscar_servicios.php?q=freno`: respuesta JSON cruda con `status`, `total` y `data`.*
+
+![Consulta de estado de turno](capturas/consulta-turno.png)
+
+*Panel «Consultá tu turno» en `turnos.php`: número + patente → `api/consultar_turno.php` → ficha
+del turno con su estado, sin recargar.*
+
+![JSON de consulta de turno](capturas/consulta-json.png)
+
+*`GET api/consultar_turno.php?id=1&patente=AC123BD`: el turno con sus servicios y estado.*
+
+![Consulta sin resultados](capturas/consulta-error.png)
+
+*Patente válida pero sin turno asociado: la API responde 404 y el panel muestra el mensaje.*
+
+![Cambio de estado en el admin](capturas/admin-cambio-estado.png)
+
+*En `admin/`, elegir otro estado en el `<select>` dispara `POST api/turno_estado.php` (JSON +
+`X-CSRF-Token`) y aparece el toast de Bootstrap sin recargar la tabla.*

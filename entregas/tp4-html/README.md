@@ -89,3 +89,36 @@ npm install
 npm run format        # Prettier sobre html/css/js/md del repo
 npm run format:check
 ```
+
+## Capturas
+
+Las 10 vistas maquetadas en HTML5 + Bootstrap 5 (sitio estático, sin backend).
+
+![Home del sitio estático](capturas/portada.png)
+
+*Home: hero, presentación, servicios destacados y testimonios.*
+
+![Catálogo de servicios](capturas/servicios.png)
+
+*Catálogo de servicios con precios base.*
+
+![Detalle de un servicio](capturas/servicio-detalle.png)
+
+*Detalle de servicio (frenos y suspensión) con especificaciones.*
+
+![Formulario de turno con validación](capturas/turnos-validacion.png)
+
+*Formulario de agendar turno enviado vacío: `js/main.js` marca los campos inválidos con las
+clases `was-validated` / `needs-validation` de Bootstrap (validación del lado del cliente).*
+
+![Contacto](capturas/contacto.png)
+
+*Datos de contacto, mapa y formulario de mensaje.*
+
+![Galería de trabajos](capturas/galeria.png)
+
+*Trabajos realizados con ilustraciones SVG propias.*
+
+![Home en mobile](capturas/portada-mobile.png)
+
+*La misma home a 390 px de ancho: grilla y menú colapsable de Bootstrap en mobile.*

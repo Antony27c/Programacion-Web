@@ -106,3 +106,27 @@ API JSON (listado y 404), alta con validación y bloqueo del borrado de un servi
 | Seeder       | `database/seeders/ServicioSeeder.php`                                   |
 | Tests        | `tests/Feature/ServicioTest.php`                                        |
 | Vistas       | `resources/views/layouts/app.blade.php` y `resources/views/servicios/` (`index`, `create`, `edit`, `show`, `_form`) |
+
+## Capturas
+
+El módulo en funcionamiento (`php artisan serve`):
+
+![Listado de servicios](docs/capturas/laravel-listado.png)
+
+*`GET /servicios`: CRUD completo del catálogo (listar, crear, editar, eliminar).*
+
+![Búsqueda de servicios](docs/capturas/laravel-busqueda.png)
+
+*`GET /servicios?q=frenos`: búsqueda sobre el catálogo.*
+
+![Formulario de alta](docs/capturas/laravel-crear.png)
+
+*`GET /servicios/create`: validación con Form Request y mensajes en español.*
+
+![Formulario de edición](docs/capturas/laravel-editar.png)
+
+*`GET /servicios/1/edit`: edición de un servicio del seeder.*
+
+![API JSON](docs/capturas/laravel-json.png)
+
+*`GET /api/servicios`: respuesta JSON de solo lectura.*

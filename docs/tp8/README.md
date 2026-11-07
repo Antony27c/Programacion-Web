@@ -96,3 +96,42 @@ con `php -S localhost:8095` + `curl` con cookie jar. Evidencia detallada en
   login.
 - Email duplicado → "Ya existe una cuenta con ese email."; password incorrecto →
   mensaje genérico.
+
+## Capturas
+
+Módulo de cuentas: login, registro, sesiones y control de acceso por roles.
+
+![Login](capturas/login.png)
+
+*`login.php`: validación con `password_verify()` y sesión regenerada (`session_regenerate_id`).*
+
+![Acceso denegado](capturas/acceso-denegado.png)
+
+*Entrar a `/admin/` sin sesión redirige a `login.php?error=acceso_denegado` con el aviso
+correspondiente.*
+
+![Credenciales incorrectas](capturas/login-error.png)
+
+*Error genérico "Email o contraseña incorrectos": no revela si el email existe.*
+
+![Registro](capturas/registro.png)
+
+*`registro.php`: alta de cliente con sanitización, email único y `password_hash` bcrypt.*
+
+![Email ya registrado](capturas/registro-email-repetido.png)
+
+*Registrarse con un email existente muestra "Ya existe una cuenta con ese email."*
+
+![Mi cuenta](capturas/mi-cuenta.png)
+
+*`mi-cuenta.php`: vista protegida con los datos del usuario y sus turnos.*
+
+![Cliente bloqueado del admin](capturas/cliente-bloqueado.png)
+
+*Un usuario con rol *Cliente* que pide `/admin/` es redirigido a
+`mi-cuenta.php?error=sin_permiso`.*
+
+![Sesión cerrada](capturas/logout.png)
+
+*Cierre de sesión por `POST` + CSRF desde el menú: la cookie `BOXLYSESSID` se borra y las vistas
+protegidas vuelven a pedir login.*

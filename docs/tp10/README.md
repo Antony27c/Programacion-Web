@@ -216,3 +216,50 @@ Abrir <http://localhost:8094/servicios>. Los tests se corren con `php artisan te
 Hacer primero la versión nativa me sirvió para entender qué resuelve el framework: en la parte A tuve que escribir
 el autoload, el `render()` con el layout, el manejo del CSRF y las redirecciones; en Laravel todo eso viene dado y
 el código del módulo queda reducido a las reglas propias del catálogo.
+
+## Capturas
+
+### Parte A — MVC nativo
+
+El módulo de turnos funciona igual que antes pero ahora pasa por `app/`: los `admin/*.php` y
+`turnos.php` son front controllers que delegan en `app/Controllers/`.
+
+![Listado del panel (MVC)](capturas/admin-listado.png)
+
+*`admin/` → `TurnoController::index()` → `Turno::listar()` (SELECT con JOINs, todo preparado).*
+
+![Formulario de alta (MVC)](capturas/admin-crear.png)
+
+*`admin/crear.php` → `TurnoController::crear()`: la vista solo imprime HTML escapado con `e()`.*
+
+![Formulario de edición (MVC)](capturas/admin-editar.png)
+
+*`admin/editar.php?id=1` → `TurnoController::editar()`: precarga el turno y valida el `POST`.*
+
+![Solicitud pública de turno (MVC)](capturas/turnos-solicitud.png)
+
+*`turnos.php` → `SolicitudTurnoController::solicitar()`: alta pública como *Pendiente*.*
+
+### Parte B — Laravel
+
+CRUD del catálogo de servicios en `tp10-laravel/` (Laravel 12, base `boxly_laravel`).
+
+![Listado de servicios en Laravel](../../tp10-laravel/docs/capturas/laravel-listado.png)
+
+*`GET /servicios`: resource de `ServicioController` con las vistas Blade.*
+
+![Búsqueda en Laravel](../../tp10-laravel/docs/capturas/laravel-busqueda.png)
+
+*`GET /servicios?q=frenos`: filtro del catálogo con el Query Builder de Eloquent.*
+
+![Crear servicio en Laravel](../../tp10-laravel/docs/capturas/laravel-crear.png)
+
+*`GET /servicios/create`: formulario Blade con validación del `ServicioRequest`.*
+
+![Editar servicio en Laravel](../../tp10-laravel/docs/capturas/laravel-editar.png)
+
+*`GET /servicios/1/edit`: edición de un servicio existente.*
+
+![API JSON de Laravel](../../tp10-laravel/docs/capturas/laravel-json.png)
+
+*`GET /api/servicios`: API JSON de solo lectura (`ServicioApiController`).*

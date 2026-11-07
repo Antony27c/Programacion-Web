@@ -9,6 +9,16 @@ backend en PHP y persistencia en MySQL mediante PDO.
 - **Mockups Figma:** https://www.figma.com/design/1MKE3Skw1MhIkSsq2L2091/Taller-Mecanico-Mockups-UI-UX-TP3
 - **Versión estática (TP4) en GitHub Pages:** https://antony27c.github.io/Programacion-Web/entregas/tp4-html/
 
+## Vista previa
+
+![Portada de BOXLY](docs/capturas/portada.png)
+
+| Panel de administración | Celular |
+|---|---|
+| ![Panel de turnos](docs/capturas/panel-admin.png) | ![Portada en el celular](docs/capturas/portada-movil.png) |
+
+Cada TP tiene sus propias capturas en su README (ver la tabla de abajo).
+
 ## Trabajos prácticos
 
 Cada TP tiene su propio README con el objetivo según el enunciado, lo implementado, los archivos
@@ -88,30 +98,41 @@ de cada TP: los iniciales (TP3 a TP5) en `main` y el resto en su rama `feature/t
 │   └── tp4-html/                    ← TP4: sitio estático HTML + auditoría Lighthouse
 ├── tp10-laravel/                    ← TP10: catálogo de servicios en Laravel 12 (base `boxly_laravel`)
 └── docs/
+    ├── DISENO.md                    ← guía de estilo del rediseño (paleta, tipografía, componentes)
+    ├── capturas/                    ← vista previa del sitio para este README
     ├── tp3/                         ← README, wireframe, informe TP3 y mockups Figma
-    ├── tp5/                         ← README, cumplimiento y capturas (screenshots/) del TP5
-    ├── tp6/  tp7/  tp8/             ← README y cumplimiento de cada TP
-    ├── tp9/                         ← TP9: README, script de pruebas de la API (probar_api.sh) y resultados (PRUEBAS.md)
-    └── tp10/                        ← TP10: README del refactor MVC y del módulo Laravel
+    ├── tp5/                         ← README, cumplimiento, capturas/ y screenshots/ del TP5
+    ├── tp6/  tp7/  tp8/             ← README, cumplimiento y capturas/ de cada TP
+    ├── tp9/                         ← TP9: README, capturas/, pruebas de la API (probar_api.sh) y resultados (PRUEBAS.md)
+    └── tp10/                        ← TP10: README y capturas/ del refactor MVC y del módulo Laravel
 ```
 
 ## Tecnología
 
-- HTML5 semántico, Bootstrap 5.3 (CDN), CSS propio (paleta BOXLY)
-- PHP 8 con includes modulares
+- HTML5 semántico, Bootstrap 5.3 (CDN), CSS propio con variables (sistema de diseño BOXLY)
+- Tipografías Plus Jakarta Sans e Inter, íconos e ilustraciones SVG propios
+- PHP 8 con arquitectura MVC propia (TP10) y Laravel 12 para el módulo de servicios
 - MySQL 8 + PDO (consultas preparadas)
 - Prettier
 
-## Paleta
+## Diseño
+
+El sitio tiene un rediseño completo pensado para que sea más amigable: portada con llamadas a la
+acción claras ("Sacar turno", "Pedir presupuesto"), formularios por pasos con campos obligatorios
+marcados y errores visibles, panel de administración con resumen por estado y buena versión para el
+celular. Todos los colores cumplen contraste WCAG AA. El detalle está en
+[`docs/DISENO.md`](docs/DISENO.md).
 
 | Token | Hex | Uso |
 |-------|-----|-----|
-| Ink | `#0F172A` | Header, footer, hero |
+| Ink | `#0F172A` | Barra superior, hero, footer |
 | Texto | `#1E293B` | Tipografía principal |
-| Acento | `#0052FF` | CTA, marca, links |
-| Titanio | `#6C757D` | Texto secundario |
-| Fondo | `#F8F9FA` | Superficies |
-| Éxito | `#10B981` | Confirmaciones |
+| Azul de marca | `#0052FF` | Botones, links, íconos |
+| Texto secundario | `#475569` | Descripciones y ayudas |
+| Arena | `#FBF7F0` | Secciones alternadas cálidas |
+| Fondo | `#F8FAFC` | Superficies |
+| Éxito | `#047857` | Confirmaciones |
+| Error | `#B91C1C` | Errores de formulario |
 
 ## Cómo correrlo en local
 
