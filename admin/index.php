@@ -1,6 +1,8 @@
 <?php
 // ============================================================
 // admin/index.php — Listado de turnos (Read)
+// TP9: el estado de cada turno se cambia desde la tabla con fetch
+//      a api/turno_estado.php (js/admin-turnos.js).
 // ============================================================
 $rolesPermitidos = ['Administrador']; // TP8: solo administradores
 require __DIR__ . '/../includes/auth_guard.php';
@@ -39,6 +41,7 @@ $titulo      = 'BOXLY | Administración de turnos';
 $descripcion = 'Panel de gestión de turnos del taller BOXLY.';
 $base        = '../';
 $seccion     = 'admin';
+$scripts     = ['js/admin-turnos.js'];
 require __DIR__ . '/../includes/header.php';
 ?>
     <main id="contenido">
@@ -73,7 +76,9 @@ require __DIR__ . '/../includes/header.php';
             <div class="alert alert-info">No hay turnos registrados<?= $filtro !== '' ? ' con estado «' . e($catalogos['estados'][(int) $filtro]) . '»' : '' ?>.</div>
           <?php else: ?>
             <div class="table-responsive-lg">
-              <table class="table table-striped table-hover align-middle bx-table">
+              <table class="table table-striped table-hover align-middle bx-table" id="tabla-turnos"
+                     data-api="../api/turno_estado.php" data-csrf="<?= e($csrf) ?>"
+                     data-colores="<?= e(json_encode($colores, JSON_UNESCAPED_UNICODE)) ?>">
                 <thead class="table-dark">
                   <tr>
                     <th scope="col">ID</th>
@@ -110,7 +115,17 @@ require __DIR__ . '/../includes/header.php';
                       </td>
                       <td data-label="Fecha" class="text-nowrap"><span><?= e(date('d/m/Y', strtotime($t['fecha']))) ?><br /><small class="text-muted"><?= e($t['horario']) ?></small></span></td>
                       <td data-label="Síntoma" class="small"><?= e(mb_strimwidth($t['sintoma'], 0, 60, '…')) ?></td>
-                      <td data-label="Estado"><span><span class="badge <?= e($colores[$t['estado']] ?? 'text-bg-light') ?>"><?= e($t['estado']) ?></span></span></td>
+                      <td data-label="Estado">
+                        <span>
+                          <span class="badge bx-estado-badge <?= e($colores[$t['estado']] ?? 'text-bg-light') ?>"><?= e($t['estado']) ?></span>
+                          <?php // TP9: con JS el badge se reemplaza por este select (cambio vía fetch, sin recargar) ?>
+                          <select class="form-select form-select-sm w-auto bx-estado-select <?= e($colores[$t['estado']] ?? 'text-bg-light') ?>" data-id="<?= e($t['id']) ?>" aria-label="Estado del turno #<?= e($t['id']) ?>" hidden>
+                            <?php foreach ($catalogos['estados'] as $idEstado => $est): ?>
+                              <option value="<?= e($idEstado) ?>"<?= $est === $t['estado'] ? ' selected' : '' ?>><?= e($est) ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </span>
+                      </td>
                       <td>
                         <div class="bx-actions">
                           <a href="editar.php?id=<?= e($t['id']) ?>" class="btn btn-sm btn-warning text-nowrap"><i class="bi bi-pencil-square" aria-hidden="true"></i> Editar</a>
@@ -127,6 +142,7 @@ require __DIR__ . '/../includes/header.php';
               </table>
             </div>
             <p class="text-muted small mb-0"><?= count($turnos) ?> turno(s) listados.</p>
+            <div class="toast-container position-fixed bottom-0 end-0 p-3" id="avisos-turnos" aria-live="polite" aria-atomic="true"></div>
           <?php endif; ?>
         </div>
       </section>

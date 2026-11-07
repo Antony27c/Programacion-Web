@@ -78,6 +78,79 @@ function obtenerTurno(PDO $pdo, int $id): ?array
 }
 
 /**
+ * Nombre de un estado del catálogo o null si el id no existe (TP9).
+ */
+function nombreEstado(PDO $pdo, int $estadoId): ?string
+{
+    $stmt = $pdo->prepare('SELECT nombre FROM estados_turno WHERE id = :id');
+    $stmt->execute([':id' => $estadoId]);
+    $nombre = $stmt->fetchColumn();
+    return $nombre === false ? null : $nombre;
+}
+
+/**
+ * Cambia solo el estado de un turno (TP9, panel con fetch).
+ * Devuelve false si el turno no existe.
+ */
+function cambiarEstadoTurno(PDO $pdo, int $id, int $estadoId): bool
+{
+    $stmt = $pdo->prepare('SELECT 1 FROM turnos WHERE id = :id');
+    $stmt->execute([':id' => $id]);
+    if (!$stmt->fetchColumn()) {
+        return false;
+    }
+    $pdo->prepare('UPDATE turnos SET estado_id = :estado WHERE id = :id')
+        ->execute([':estado' => $estadoId, ':id' => $id]);
+    return true;
+}
+
+/**
+ * Normaliza una patente como en el formulario de turnos: sin espacios,
+ * puntos ni guiones y en mayúsculas. Devuelve null si el formato no es válido.
+ */
+function normalizarPatente(string $patente): ?string
+{
+    $patente = strtoupper(preg_replace('/[\s.-]+/', '', $patente));
+    return preg_match('/^([A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$/', $patente) ? $patente : null;
+}
+
+/**
+ * Consulta pública del estado de un turno (TP9). Exige número de turno
+ * y patente del vehículo: sin la patente correcta no se revela nada.
+ * No devuelve datos personales del cliente. null si no hay coincidencia.
+ */
+function consultarEstadoTurno(PDO $pdo, int $id, string $patente): ?array
+{
+    $stmt = $pdo->prepare(
+        'SELECT t.id, t.fecha, t.horario, e.nombre AS estado,
+                m.nombre AS marca, v.modelo, v.patente,
+                (SELECT GROUP_CONCAT(s.nombre ORDER BY s.nombre SEPARATOR \', \')
+                   FROM turno_servicio ts
+                   INNER JOIN servicios s ON s.id = ts.servicio_id
+                  WHERE ts.turno_id = t.id) AS servicios
+         FROM turnos t
+         INNER JOIN vehiculos     v ON v.id = t.vehiculo_id
+         INNER JOIN marcas        m ON m.id = v.marca_id
+         INNER JOIN estados_turno e ON e.id = t.estado_id
+         WHERE t.id = :id AND v.patente = :patente'
+    );
+    $stmt->execute([':id' => $id, ':patente' => $patente]);
+    $turno = $stmt->fetch();
+    if (!$turno) {
+        return null;
+    }
+    return [
+        'id'        => (int) $turno['id'],
+        'fecha'     => $turno['fecha'],
+        'horario'   => $turno['horario'],
+        'estado'    => $turno['estado'],
+        'vehiculo'  => trim($turno['marca'] . ' ' . $turno['modelo']),
+        'patente'   => $turno['patente'],
+        'servicios' => $turno['servicios'] === null ? [] : explode(', ', $turno['servicios']),
+    ];
+}
+
+/**
  * Crea ($id = null) o actualiza un turno en una transacción:
  * 1) busca/crea el usuario por email, 2) busca/crea el vehículo por patente,
  * 3) inserta/actualiza el turno, 4) sincroniza sus servicios (tabla N:M).

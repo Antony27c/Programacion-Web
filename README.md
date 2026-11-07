@@ -20,11 +20,17 @@ backend en PHP y persistencia en MySQL mediante PDO.
 │   ├── NORMALIZACION.md             ← tabla sin normalizar, 1FN, 2FN, 3FN, PK/FK y diagrama ER
 │   ├── schema.sql                   ← DDL: base `boxly`, 8 tablas, FK, auditoría e índices
 │   └── consultas.sql                ← DML: datos iniciales + SELECT/JOIN, UPDATE y DELETE
+├── api/                             ← TP9: endpoints JSON para Fetch API
+│   ├── buscar_servicios.php         ← GET ?q= → servicios que coinciden (200/400/405/500)
+│   ├── consultar_turno.php          ← GET ?id&patente → estado de un turno (200/400/404/405/500)
+│   └── turno_estado.php             ← POST JSON + X-CSRF-Token → cambio de estado (solo admin)
 ├── includes/
-│   ├── header.php  footer.php       ← plantilla modular
+│   ├── header.php  footer.php       ← plantilla modular (footer carga el JS de cada página)
 │   ├── funciones.php                ← sanitización, validación de turnos, CSRF
 │   ├── turnos_db.php                ← acceso a datos (catálogos, JOINs, alta/edición en transacción)
-│   └── campos_turno.php             ← campos del formulario de turno (sitio y admin)
+│   ├── campos_turno.php             ← campos del formulario de turno (sitio y admin)
+│   ├── api.php                      ← TP9: helpers JSON (responderJson, errorJson, exigirMetodo)
+│   └── servicios_db.php             ← TP9: consultas del catálogo de servicios
 ├── login.php registro.php logout.php mi-cuenta.php   ← TP8: autenticación
 ├── admin/                           ← TP7: CRUD de turnos (TP8: solo rol Administrador)
 │   ├── index.php                    ← listado (Read) + filtro por estado
@@ -34,12 +40,18 @@ backend en PHP y persistencia en MySQL mediante PDO.
 │   └── _formulario.php              ← formulario compartido alta/edición
 ├── index.php nosotros.php servicios.php servicio-detalle.php turnos.php
 ├── presupuesto.php testimonios.php galeria.php contacto.php faq.php
-├── css/  js/  img/
+├── css/  img/
+├── js/
+│   ├── main.js                      ← comportamiento general del sitio
+│   ├── servicios.js                 ← TP9: búsqueda en vivo de servicios (Fetch + JSON)
+│   ├── turnos.js                    ← TP9: consulta de estado de turno sin recargar
+│   └── admin-turnos.js              ← TP9: cambio de estado de turnos desde el panel
 ├── entregas/
 │   └── tp4-html/                    ← TP4: sitio estático HTML + auditoría Lighthouse
 └── docs/
     ├── tp3/                         ← wireframe, informe TP3 y mockups Figma
-    └── tp5/screenshots/             ← capturas TP5
+    ├── tp5/screenshots/             ← capturas TP5
+    └── tp9/                         ← TP9: README, script de pruebas de la API (probar_api.sh) y resultados (PRUEBAS.md)
 ```
 
 ## Tecnología
@@ -75,6 +87,28 @@ backend en PHP y persistencia en MySQL mediante PDO.
    ```
 
 4. Abrir http://localhost:8099 (sitio) y http://localhost:8099/admin/ (panel de turnos).
+5. **API JSON (TP9):** con el servidor levantado, correr las pruebas con curl de los endpoints
+   (inicia sesión como administrador para los casos de `turno_estado.php`):
+
+   ```bash
+   bash docs/tp9/probar_api.sh 8099
+   ```
+
+---
+
+## TP9 — Comunicación asincrónica con AJAX y JSON
+
+Endpoints PHP independientes en `api/` que responden JSON (PDO con consultas preparadas,
+`json_encode()` y códigos HTTP correctos) y se consumen con Fetch API y `async/await`: búsqueda de
+servicios en vivo, consulta del estado de un turno y cambio de estado desde el panel admin, todo
+sin recargar la página. Los resultados se arman en el DOM con `textContent` (sin `innerHTML`).
+Detalle completo en [`docs/tp9/README.md`](docs/tp9/README.md) y resultados de las pruebas en [`docs/tp9/PRUEBAS.md`](docs/tp9/PRUEBAS.md).
+
+| Endpoint | Método | Uso | Códigos |
+|----------|--------|-----|---------|
+| `api/buscar_servicios.php?q=` | GET | Buscador en vivo de `servicios.php` (`js/servicios.js`) | 200 · 400 · 405 · 500 |
+| `api/consultar_turno.php?id=&patente=` | GET | Panel «Consultá tu turno» de `turnos.php` (`js/turnos.js`) | 200 · 400 · 404 · 405 · 500 |
+| `api/turno_estado.php` | POST (JSON + `X-CSRF-Token`) | Estado de cada turno en `admin/index.php` (`js/admin-turnos.js`), solo Administrador | 200 · 400 · 401 · 403 · 404 · 405 · 415 · 500 |
 
 ---
 
