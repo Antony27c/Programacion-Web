@@ -38,5 +38,8 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="<?= e($base) ?>js/main.js"></script>
+    <?php foreach ($scripts ?? [] as $script): // TP9: JS propio de cada página ?>
+      <script src="<?= e($base . $script) ?>"></script>
+    <?php endforeach; ?>
   </body>
 </html>

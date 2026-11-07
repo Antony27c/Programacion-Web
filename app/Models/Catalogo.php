@@ -26,4 +26,15 @@ class Catalogo extends Model
             self::CONSULTAS
         );
     }
+
+    /**
+     * Nombre de un estado del catálogo o null si el id no existe (TP9).
+     */
+    public function nombreEstado(int $estadoId): ?string
+    {
+        $stmt = $this->pdo->prepare('SELECT nombre FROM estados_turno WHERE id = :id');
+        $stmt->execute([':id' => $estadoId]);
+        $nombre = $stmt->fetchColumn();
+        return $nombre === false ? null : $nombre;
+    }
 }

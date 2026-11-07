@@ -29,6 +29,10 @@ try {
 } catch (\PDOException $e) {
     // El detalle técnico va al log del servidor, nunca al navegador
     error_log('Error de conexión PDO: ' . $e->getMessage());
+    // TP9: si la incluye un endpoint de api/, la falla se informa como 500 en JSON
+    if (function_exists('responderJson')) {
+        responderJson(500, ['status' => 'error', 'message' => 'Error de conexión con la base de datos. Intentá de nuevo más tarde.']);
+    }
     http_response_code(500);
     die('Error crítico de conexión con la base de datos. Verificá que MySQL esté iniciado y las credenciales en config/conexion.local.php.');
 }

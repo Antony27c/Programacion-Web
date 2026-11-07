@@ -13,8 +13,7 @@ backend en PHP y persistencia en MySQL mediante PDO.
 
 Cada TP tiene su propio README con el objetivo según el enunciado, lo implementado, los archivos
 principales, cómo probarlo y las pruebas realizadas. La columna *Rama* indica dónde quedó el trabajo
-de cada TP: los iniciales (TP3 a TP5) en `main` y el resto en su rama `feature/tpN-...`; el README del
-TP9 se enlaza a su rama.
+de cada TP: los iniciales (TP3 a TP5) en `main` y el resto en su rama `feature/tpN-...`.
 
 | TP   | Tema                                              | Rama                  | README |
 |------|---------------------------------------------------|-----------------------|--------|
@@ -24,7 +23,7 @@ TP9 se enlaza a su rama.
 | TP6  | Esquema relacional en MySQL                       | `feature/tp6-esquema` | [`docs/tp6/README.md`](docs/tp6/README.md) |
 | TP7  | Persistencia PDO y CRUD de turnos                 | `feature/tp7-crud`    | [`docs/tp7/README.md`](docs/tp7/README.md) |
 | TP8  | Sesiones, autenticación y roles                   | `feature/tp8-auth`    | [`docs/tp8/README.md`](docs/tp8/README.md) |
-| TP9  | Comunicación asincrónica AJAX + JSON              | `feature/tp9-ajax`    | [`docs/tp9/README.md`](https://github.com/Antony27c/Programacion-Web/blob/feature/tp9-ajax/docs/tp9/README.md) |
+| TP9  | Comunicación asincrónica AJAX + JSON              | `feature/tp9-ajax`    | [`docs/tp9/README.md`](docs/tp9/README.md) |
 | TP10 | Refactor MVC y módulo en Laravel                  | `feature/tp10-mvc`    | [`docs/tp10/README.md`](docs/tp10/README.md) · [`tp10-laravel/README.md`](tp10-laravel/README.md) |
 
 - **TP3** — Wireframe y mockups UI/UX de las vistas del sitio en Figma (`docs/tp3/`).
@@ -56,15 +55,20 @@ TP9 se enlaza a su rama.
 ├── app/                             ← TP10: refactor MVC del módulo de turnos (PHP puro)
 │   ├── bootstrap.php                ← autoload PSR-4 (App\*) + helpers del sitio
 │   ├── Core/                        ← Controller base, Database (envuelve config/conexion.php) y Model
-│   ├── Models/                      ← Catalogo, Turno, Usuario, Vehiculo (SQL preparado)
+│   ├── Models/                      ← Catalogo, Turno, Usuario, Vehiculo y Servicio (TP9) con SQL preparado
 │   ├── Controllers/                 ← TurnoController (CRUD admin) y SolicitudTurnoController (turno público)
 │   └── Views/turnos/                ← index, form, solicitar y _campos (HTML escapado)
+├── api/                             ← TP9: endpoints JSON para Fetch API (usan los modelos de app/)
+│   ├── buscar_servicios.php         ← GET ?q= → servicios que coinciden (200/400/405/500)
+│   ├── consultar_turno.php          ← GET ?id&patente → estado de un turno (200/400/404/405/500)
+│   └── turno_estado.php             ← POST JSON + X-CSRF-Token → cambio de estado (solo admin)
 ├── includes/
-│   ├── header.php  footer.php       ← plantilla modular
+│   ├── header.php  footer.php       ← plantilla modular (footer carga el JS de cada página)
 │   ├── funciones.php                ← sanitización, listas blancas, CSRF
 │   ├── auth_guard.php               ← guardián de sesión y roles (TP8)
 │   ├── sesion.php                   ← cookie de sesión segura y expiración (TP8)
-│   └── usuarios_db.php              ← acceso a datos de usuarios (TP8)
+│   ├── usuarios_db.php              ← acceso a datos de usuarios (TP8)
+│   └── api.php                      ← TP9: helpers JSON (responderJson, errorJson, exigirMetodo)
 ├── login.php registro.php logout.php mi-cuenta.php   ← TP8: autenticación
 ├── admin/                           ← CRUD de turnos (TP7) como front controllers MVC (TP10), solo rol Administrador
 │   ├── index.php                    ← listado (Read) + filtro por estado
@@ -74,7 +78,12 @@ TP9 se enlaza a su rama.
 ├── turnos.php                       ← solicitud pública de turno (front controller MVC)
 ├── index.php nosotros.php servicios.php servicio-detalle.php
 ├── presupuesto.php testimonios.php galeria.php contacto.php faq.php
-├── css/  js/  img/
+├── css/  img/
+├── js/
+│   ├── main.js                      ← comportamiento general del sitio
+│   ├── servicios.js                 ← TP9: búsqueda en vivo de servicios (Fetch + JSON)
+│   ├── turnos.js                    ← TP9: consulta de estado de turno sin recargar
+│   └── admin-turnos.js              ← TP9: cambio de estado de turnos desde el panel
 ├── entregas/
 │   └── tp4-html/                    ← TP4: sitio estático HTML + auditoría Lighthouse
 ├── tp10-laravel/                    ← TP10: catálogo de servicios en Laravel 12 (base `boxly_laravel`)
@@ -82,6 +91,7 @@ TP9 se enlaza a su rama.
     ├── tp3/                         ← README, wireframe, informe TP3 y mockups Figma
     ├── tp5/                         ← README, cumplimiento y capturas (screenshots/) del TP5
     ├── tp6/  tp7/  tp8/             ← README y cumplimiento de cada TP
+    ├── tp9/                         ← TP9: README, script de pruebas de la API (probar_api.sh) y resultados (PRUEBAS.md)
     └── tp10/                        ← TP10: README del refactor MVC y del módulo Laravel
 ```
 
@@ -118,7 +128,14 @@ TP9 se enlaza a su rama.
    ```
 
 4. Abrir http://localhost:8099 (sitio) y http://localhost:8099/admin/ (panel de turnos).
-5. **Módulo Laravel (TP10, opcional):** usa su propia base `boxly_laravel` (crearla vacía antes de migrar).
+5. **API JSON (TP9):** con el servidor levantado, correr las pruebas con curl de los endpoints
+   (inicia sesión como administrador para los casos de `turno_estado.php`):
+
+   ```bash
+   bash docs/tp9/probar_api.sh 8099
+   ```
+
+6. **Módulo Laravel (TP10, opcional):** usa su propia base `boxly_laravel` (crearla vacía antes de migrar).
 
    ```bash
    cd tp10-laravel
@@ -143,6 +160,22 @@ TP9 se enlaza a su rama.
 
 Desarrollo completo, decisiones y pruebas en [`docs/tp10/README.md`](docs/tp10/README.md) y
 [`tp10-laravel/README.md`](tp10-laravel/README.md).
+
+---
+
+## TP9 — Comunicación asincrónica con AJAX y JSON
+
+Endpoints PHP independientes en `api/` que responden JSON (consultas preparadas en los modelos de `app/Models/`,
+`json_encode()` y códigos HTTP correctos) y se consumen con Fetch API y `async/await`: búsqueda de
+servicios en vivo, consulta del estado de un turno y cambio de estado desde el panel admin, todo
+sin recargar la página. Los resultados se arman en el DOM con `textContent` (sin `innerHTML`).
+Detalle completo en [`docs/tp9/README.md`](docs/tp9/README.md) y resultados de las pruebas en [`docs/tp9/PRUEBAS.md`](docs/tp9/PRUEBAS.md).
+
+| Endpoint | Método | Uso | Códigos |
+|----------|--------|-----|---------|
+| `api/buscar_servicios.php?q=` | GET | Buscador en vivo de `servicios.php` (`js/servicios.js`) | 200 · 400 · 405 · 500 |
+| `api/consultar_turno.php?id=&patente=` | GET | Panel «Consultá tu turno» de `turnos.php` (`js/turnos.js`) | 200 · 400 · 404 · 405 · 500 |
+| `api/turno_estado.php` | POST (JSON + `X-CSRF-Token`) | Estado de cada turno en `admin/index.php` (`js/admin-turnos.js`), solo Administrador | 200 · 400 · 401 · 403 · 404 · 405 · 415 · 500 |
 
 ---
 

@@ -48,6 +48,7 @@ class TurnoController extends Controller
             'turnos'      => $this->turnos->listar((int) $filtro),
             'filtro'      => $filtro,
             'status'      => self::MENSAJES[filter_input(INPUT_GET, 'status') ?? ''] ?? null,
+            'scripts'     => ['js/admin-turnos.js'], // TP9: cambio de estado con fetch
         ]));
     }
 

@@ -3,6 +3,8 @@
 // SolicitudTurnoController — Solicitud pública de turno (turnos.php)
 // Sanitización + validación en servidor (TP5), persistencia (TP7)
 // y precarga de la cuenta logueada (TP8).
+// TP9: panel «Consultá tu turno» (número + patente); con JS lo resuelve
+//      js/turnos.js vía api/consultar_turno.php y sin JS se resuelve acá.
 // ============================================================
 namespace App\Controllers;
 
@@ -49,6 +51,26 @@ class SolicitudTurnoController extends Controller
             }
         }
 
+        // TP9: consulta de estado sin JS (mismas validaciones que api/consultar_turno.php)
+        $consultaId      = limpiar(filter_input(INPUT_GET, 'consulta_id', FILTER_UNSAFE_RAW));
+        $consultaPatente = limpiar(filter_input(INPUT_GET, 'patente', FILTER_UNSAFE_RAW));
+        $consulta        = null;
+        $consultaError   = null;
+        if ($consultaId !== '' || $consultaPatente !== '') {
+            $idValido      = ctype_digit($consultaId) && (int) $consultaId > 0 ? (int) $consultaId : null;
+            $patenteValida = Turno::normalizarPatente($consultaPatente);
+            if ($idValido === null) {
+                $consultaError = 'Ingresá un número de turno válido (entero positivo).';
+            } elseif ($patenteValida === null) {
+                $consultaError = 'Ingresá una patente válida (ABC123 o AB123CD).';
+            } else {
+                $consulta = (new Turno())->consultarEstado($idValido, $patenteValida);
+                if ($consulta === null) {
+                    $consultaError = "No encontramos el turno N° $idValido para la patente $patenteValida.";
+                }
+            }
+        }
+
         $this->render('turnos/solicitar', [
             'titulo'      => 'BOXLY | Agendar turno',
             'descripcion' => 'Agendá tu turno en el taller BOXLY de Salta.',
@@ -63,6 +85,11 @@ class SolicitudTurnoController extends Controller
             'enviado'     => $this->esPost(),
             'emailFijo'   => $cuenta !== null,
             'admin'       => false,
+            'consultaId'      => $consultaId,
+            'consultaPatente' => $consultaPatente,
+            'consulta'        => $consulta,
+            'consultaError'   => $consultaError,
+            'scripts'         => ['js/turnos.js'],
         ]);
     }
 }

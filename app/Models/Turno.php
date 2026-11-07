@@ -136,6 +136,58 @@ class Turno extends Model
     }
 
     /**
+     * Cambia solo el estado de un turno (TP9, panel con fetch).
+     * Devuelve false si el turno no existe.
+     */
+    public function cambiarEstado(int $id, int $estadoId): bool
+    {
+        $stmt = $this->pdo->prepare('SELECT 1 FROM turnos WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        if (!$stmt->fetchColumn()) {
+            return false;
+        }
+        $this->pdo->prepare('UPDATE turnos SET estado_id = :estado WHERE id = :id')
+            ->execute([':estado' => $estadoId, ':id' => $id]);
+        return true;
+    }
+
+    /**
+     * Consulta pública del estado de un turno (TP9). Exige número de turno
+     * y patente del vehículo: sin la patente correcta no se revela nada.
+     * No devuelve datos personales del cliente. null si no hay coincidencia.
+     */
+    public function consultarEstado(int $id, string $patente): ?array
+    {
+        $stmt = $this->pdo->prepare(
+            'SELECT t.id, t.fecha, t.horario, e.nombre AS estado,
+                    m.nombre AS marca, v.modelo, v.patente,
+                    (SELECT GROUP_CONCAT(s.nombre ORDER BY s.nombre SEPARATOR \', \')
+                       FROM turno_servicio ts
+                       INNER JOIN servicios s ON s.id = ts.servicio_id
+                      WHERE ts.turno_id = t.id) AS servicios
+             FROM turnos t
+             INNER JOIN vehiculos     v ON v.id = t.vehiculo_id
+             INNER JOIN marcas        m ON m.id = v.marca_id
+             INNER JOIN estados_turno e ON e.id = t.estado_id
+             WHERE t.id = :id AND v.patente = :patente'
+        );
+        $stmt->execute([':id' => $id, ':patente' => $patente]);
+        $turno = $stmt->fetch();
+        if (!$turno) {
+            return null;
+        }
+        return [
+            'id'        => (int) $turno['id'],
+            'fecha'     => $turno['fecha'],
+            'horario'   => $turno['horario'],
+            'estado'    => $turno['estado'],
+            'vehiculo'  => trim($turno['marca'] . ' ' . $turno['modelo']),
+            'patente'   => $turno['patente'],
+            'servicios' => $turno['servicios'] === null ? [] : explode(', ', $turno['servicios']),
+        ];
+    }
+
+    /**
      * Deja en turno_servicio exactamente los servicios elegidos. Los que ya
      * estaban conservan el precio congelado; los nuevos toman el precio_base actual.
      */
@@ -166,6 +218,16 @@ class Turno extends Model
     // Servicios, marcas y estados se validan contra los catálogos
     // de la base (ver Catalogo::todos()).
     // ------------------------------------------------------------
+
+    /**
+     * Normaliza una patente como en el formulario de turnos: sin espacios,
+     * puntos ni guiones y en mayúsculas. Devuelve null si el formato no es válido.
+     */
+    public static function normalizarPatente(string $patente): ?string
+    {
+        $patente = strtoupper(preg_replace('/[\s.-]+/', '', $patente));
+        return preg_match('/^([A-Z]{3}[0-9]{3}|[A-Z]{2}[0-9]{3}[A-Z]{2})$/', $patente) ? $patente : null;
+    }
 
     /**
      * Datos vacíos para inicializar el formulario de turno.
