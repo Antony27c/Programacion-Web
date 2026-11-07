@@ -173,6 +173,12 @@ function idVehiculo(PDO $pdo, array $d, int $usuarioId, bool $actualizar): int
  */
 function sincronizarServicios(PDO $pdo, int $turnoId, array $servicios): void
 {
+    // Sin servicios elegidos se deja la relación vacía (IN () sería SQL inválido)
+    if ($servicios === []) {
+        $pdo->prepare('DELETE FROM turno_servicio WHERE turno_id = ?')->execute([$turnoId]);
+        return;
+    }
+
     $in = implode(', ', array_fill(0, count($servicios), '?'));
 
     $pdo->prepare("DELETE FROM turno_servicio WHERE turno_id = ? AND servicio_id NOT IN ($in)")

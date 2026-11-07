@@ -15,10 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !csrfValido($_POST['csrf'] ?? null)
 
 $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 
+$status = 'notfound';
 if ($id) {
-    $stmt = $pdo->prepare('DELETE FROM turnos WHERE id = :id');
-    $stmt->execute([':id' => $id]);
+    try {
+        $stmt = $pdo->prepare('DELETE FROM turnos WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        $status = $stmt->rowCount() > 0 ? 'deleted' : 'notfound';
+    } catch (PDOException $ex) {
+        // Error controlado: el detalle queda en el log del servidor
+        error_log('Error al eliminar turno: ' . $ex->getMessage());
+        $status = 'dberror';
+    }
 }
 
-header('Location: index.php?status=' . ($id && $stmt->rowCount() > 0 ? 'deleted' : 'notfound'));
+header('Location: index.php?status=' . $status);
 exit;

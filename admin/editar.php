@@ -28,6 +28,7 @@ $csrf      = csrfToken();
 $catalogos = catalogos($pdo);
 $datos     = $turno;
 $errores   = [];
+$errorDb   = null;
 
 if ($esPost) {
     if (!csrfValido($_POST['csrf'] ?? null)) {
@@ -38,9 +39,15 @@ if ($esPost) {
     [$datos, $errores] = validarTurno($_POST, $catalogos, true);
 
     if ($errores === []) {
-        guardarTurno($pdo, $datos, true, $id);
-        header('Location: index.php?status=updated');
-        exit;
+        try {
+            guardarTurno($pdo, $datos, true, $id);
+            header('Location: index.php?status=updated');
+            exit;
+        } catch (PDOException $ex) {
+            // Error controlado: el detalle queda en el log del servidor
+            error_log('Error al guardar turno: ' . $ex->getMessage());
+            $errorDb = 'No se pudo guardar el turno en la base de datos. Intentá nuevamente.';
+        }
     }
 }
 
@@ -62,6 +69,9 @@ require __DIR__ . '/../includes/header.php';
       </section>
       <section class="bx-section bx-section-white">
         <div class="container">
+          <?php if ($errorDb): ?>
+            <div class="alert alert-danger" role="alert"><?= e($errorDb) ?></div>
+          <?php endif; ?>
           <?php if ($errores): ?>
             <div class="alert alert-danger" role="alert">
               <strong>Revisá el formulario:</strong> encontramos <?= count($errores) ?> error(es) de validación.

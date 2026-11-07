@@ -23,6 +23,7 @@ $mensajes = [
     'created'  => ['success', 'Turno creado correctamente.'],
     'updated'  => ['success', 'Turno actualizado correctamente.'],
     'deleted'  => ['success', 'Turno eliminado correctamente.'],
+    'dberror'  => ['danger', 'No se pudo eliminar el turno en la base de datos. Intentá nuevamente.'],
     'notfound' => ['warning', 'El turno solicitado no existe.'],
     'invalid'  => ['danger', 'La solicitud no es válida. Volvé a intentarlo.'],
 ];

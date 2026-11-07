@@ -13,6 +13,8 @@ $datos     = turnoVacio($catalogos);
 $errores   = [];
 $turnoId   = null;
 $admin     = false;
+$csrf      = csrfToken();
+$errorGeneral = null;
 
 // TP8: con sesión iniciada se precargan los datos y el turno queda a nombre de la cuenta
 $cuenta    = ($u = usuarioActual()) ? obtenerUsuario($pdo, $u['id']) : null;
@@ -22,13 +24,23 @@ if ($cuenta) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1) Sanitizar y validar en servidor (listas blancas contra los catálogos)
-    $entrada = $cuenta ? ['email' => $cuenta['email']] + $_POST : $_POST;
-    [$datos, $errores] = validarTurno($entrada, $catalogos);
+    if (!csrfValido($_POST['csrf'] ?? null)) {
+        $errorGeneral = 'El formulario expiró o la solicitud no es válida. Recargá la página e intentá nuevamente.';
+    } else {
+        // 1) Sanitizar y validar en servidor (listas blancas contra los catálogos)
+        $entrada = $cuenta ? ['email' => $cuenta['email']] + $_POST : $_POST;
+        [$datos, $errores] = validarTurno($entrada, $catalogos);
 
-    // 2) Guardar con consultas preparadas (anti SQL Injection)
-    if ($errores === []) {
-        $turnoId = guardarTurno($pdo, $datos, false);
+        // 2) Guardar con consultas preparadas (anti SQL Injection)
+        if ($errores === []) {
+            try {
+                $turnoId = guardarTurno($pdo, $datos, false);
+            } catch (PDOException $ex) {
+                // Error controlado: el detalle queda en el log del servidor
+                error_log('Error al guardar turno desde turnos.php: ' . $ex->getMessage());
+                $errorGeneral = 'No se pudo registrar el turno en la base de datos. Intentá nuevamente en unos minutos.';
+            }
+        }
     }
 }
 $exito = $turnoId !== null;
@@ -72,6 +84,8 @@ require __DIR__ . '/includes/header.php';
                     <dd class="col-sm-8"><?= e($datos['sintoma']) ?></dd>
                   </dl>
                 </div>
+              <?php elseif ($errorGeneral): ?>
+                <div class="alert alert-danger" role="alert"><?= e($errorGeneral) ?></div>
               <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
                 <div class="alert alert-danger" role="alert">
                   <strong>Revisá el formulario:</strong> encontramos <?= count($errores) ?> error(es) de validación.
@@ -79,6 +93,7 @@ require __DIR__ . '/includes/header.php';
               <?php endif; ?>
 
               <form class="bx-form" method="post" action="turnos.php" novalidate>
+                <input type="hidden" name="csrf" value="<?= e($csrf) ?>" />
                 <?php require __DIR__ . '/includes/campos_turno.php'; ?>
                 <button class="btn btn-bx-primary mt-4" type="submit">Confirmar turno</button>
               </form>
