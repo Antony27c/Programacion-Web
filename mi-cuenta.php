@@ -3,17 +3,19 @@
 // mi-cuenta.php — Vista protegida para cualquier usuario logueado (TP8)
 // ============================================================
 require __DIR__ . '/includes/auth_guard.php';
-require_once __DIR__ . '/includes/turnos_db.php';
-require_once __DIR__ . '/config/conexion.php';
+require __DIR__ . '/app/bootstrap.php';
 
-$usuario = obtenerUsuario($pdo, (int) $_SESSION['usuario_id']);
+use App\Models\Turno;
+use App\Models\Usuario;
+
+$usuario = (new Usuario())->obtener((int) $_SESSION['usuario_id']);
 if (!$usuario) {
     // La cuenta fue eliminada mientras la sesión seguía abierta
     cerrarSesion();
     header('Location: login.php?error=acceso_denegado');
     exit;
 }
-$turnos  = listarTurnos($pdo, 0, (int) $usuario['id']);
+$turnos  = (new Turno())->listar(0, (int) $usuario['id']);
 $sinPermiso = filter_input(INPUT_GET, 'error') === 'sin_permiso';
 
 $titulo      = 'BOXLY | Mi cuenta';

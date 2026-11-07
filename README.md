@@ -20,26 +20,35 @@ backend en PHP y persistencia en MySQL mediante PDO.
 │   ├── NORMALIZACION.md             ← tabla sin normalizar, 1FN, 2FN, 3FN, PK/FK y diagrama ER
 │   ├── schema.sql                   ← DDL: base `boxly`, 8 tablas, FK, auditoría e índices
 │   └── consultas.sql                ← DML: datos iniciales + SELECT/JOIN, UPDATE y DELETE
+├── app/                             ← TP10: refactor MVC del módulo de turnos (PHP puro)
+│   ├── bootstrap.php                ← autoload PSR-4 (App\*) + helpers del sitio
+│   ├── Core/                        ← Controller base, Database (envuelve config/conexion.php) y Model
+│   ├── Models/                      ← Catalogo, Turno, Usuario, Vehiculo (SQL preparado)
+│   ├── Controllers/                 ← TurnoController (CRUD admin) y SolicitudTurnoController (turno público)
+│   └── Views/turnos/                ← index, form, solicitar y _campos (HTML escapado)
 ├── includes/
 │   ├── header.php  footer.php       ← plantilla modular
-│   ├── funciones.php                ← sanitización, validación de turnos, CSRF
-│   ├── turnos_db.php                ← acceso a datos (catálogos, JOINs, alta/edición en transacción)
-│   └── campos_turno.php             ← campos del formulario de turno (sitio y admin)
+│   ├── funciones.php                ← sanitización, listas blancas, CSRF
+│   ├── auth_guard.php               ← guardián de sesión y roles (TP8)
+│   ├── sesion.php                   ← cookie de sesión segura y expiración (TP8)
+│   └── usuarios_db.php              ← acceso a datos de usuarios (TP8)
 ├── login.php registro.php logout.php mi-cuenta.php   ← TP8: autenticación
-├── admin/                           ← TP7: CRUD de turnos (TP8: solo rol Administrador)
+├── admin/                           ← CRUD de turnos (TP7) como front controllers MVC (TP10), solo rol Administrador
 │   ├── index.php                    ← listado (Read) + filtro por estado
 │   ├── crear.php                    ← alta (Create)
 │   ├── editar.php                   ← modificación (Update)
-│   ├── eliminar.php                 ← baja (Delete)
-│   └── _formulario.php              ← formulario compartido alta/edición
-├── index.php nosotros.php servicios.php servicio-detalle.php turnos.php
+│   └── eliminar.php                 ← baja (Delete)
+├── turnos.php                       ← solicitud pública de turno (front controller MVC)
+├── index.php nosotros.php servicios.php servicio-detalle.php
 ├── presupuesto.php testimonios.php galeria.php contacto.php faq.php
 ├── css/  js/  img/
 ├── entregas/
 │   └── tp4-html/                    ← TP4: sitio estático HTML + auditoría Lighthouse
+├── tp10-laravel/                    ← TP10: catálogo de servicios en Laravel 12 (base `boxly_laravel`)
 └── docs/
     ├── tp3/                         ← wireframe, informe TP3 y mockups Figma
-    └── tp5/screenshots/             ← capturas TP5
+    ├── tp5/screenshots/             ← capturas TP5
+    └── tp10/                        ← TP10: README del refactor MVC y del módulo Laravel
 ```
 
 ## Tecnología
@@ -75,6 +84,31 @@ backend en PHP y persistencia en MySQL mediante PDO.
    ```
 
 4. Abrir http://localhost:8099 (sitio) y http://localhost:8099/admin/ (panel de turnos).
+5. **Módulo Laravel (TP10, opcional):** usa su propia base `boxly_laravel` (crearla vacía antes de migrar).
+
+   ```bash
+   cd tp10-laravel
+   composer install
+   cp .env.example .env          # completar DB_PASSWORD
+   php artisan key:generate
+   php artisan migrate --seed
+   php artisan serve --port=8094
+   ```
+
+   Abrir http://localhost:8094/servicios. Detalle en [`tp10-laravel/README.md`](tp10-laravel/README.md).
+
+---
+
+## TP10 — Refactorización a MVC e implementación con framework
+
+- **Parte A — MVC nativo:** el módulo de turnos (solicitud pública y CRUD del panel) quedó organizado en
+  `app/Models/` (consultas PDO preparadas), `app/Controllers/` (request, validación, CSRF y redirecciones) y
+  `app/Views/` (HTML escapado). `turnos.php` y `admin/*.php` son front controllers de pocas líneas.
+- **Parte B — Laravel:** catálogo de servicios en Laravel 12 (`tp10-laravel/`) con routing, controlador,
+  modelo Eloquent, vistas Blade y una API JSON de solo lectura.
+
+Desarrollo completo, decisiones y pruebas en [`docs/tp10/README.md`](docs/tp10/README.md) y
+[`tp10-laravel/README.md`](tp10-laravel/README.md).
 
 ---
 
@@ -135,9 +169,9 @@ cada turno referencia a un cliente (`usuarios`), un vehículo (`vehiculos`), un 
 | Requisito | Implementación |
 |-----------|----------------|
 | Conexión segura | `config/conexion.php`: PDO con `ERRMODE_EXCEPTION`, `FETCH_ASSOC`, `EMULATE_PREPARES = false` y `try/catch (PDOException)`. El detalle del error va a `error_log`, no al navegador. Credenciales fuera del repo. |
-| SQL Injection | **Todas** las consultas (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) usan `prepare()` + `execute()` con parámetros (`includes/turnos_db.php`). Los `id` se validan con `FILTER_VALIDATE_INT`. |
+| SQL Injection | **Todas** las consultas (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) usan `prepare()` + `execute()` con parámetros (en el TP7 `includes/turnos_db.php`; desde el TP10 los modelos de `app/Models/`). Los `id` se validan con `FILTER_VALIDATE_INT`. |
 | XSS | Toda variable impresa pasa por `e()` → `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')`. |
-| Validación | `validarTurno()` en servidor: obligatorios, largo, email, regex de teléfono y patente, año, fecha válida, UTF-8 válido y listas blancas: marca, servicios y estado se validan contra los catálogos de la base. |
+| Validación | `validarTurno()` en servidor (desde el TP10, `Turno::validar()` en `app/Models/Turno.php`): obligatorios, largo, email, regex de teléfono y patente, año, fecha válida, UTF-8 válido y listas blancas: marca, servicios y estado se validan contra los catálogos de la base. |
 | Integridad | Alta y edición corren en una **transacción** (usuario → vehículo → turno → servicios): si algo falla se hace `rollBack()`. Desde el sitio público un email o patente existentes se reutilizan sin modificar sus datos. |
 | CSRF | Alta, edición y baja exigen un token de sesión (`csrfToken()` / `csrfValido()`). La baja solo acepta `POST`: un link GET no puede borrar registros. |
 

@@ -4,8 +4,7 @@
 // Sanitización + validación en servidor, email único y
 // password_hash(PASSWORD_BCRYPT) con consulta preparada
 // ============================================================
-require_once __DIR__ . '/includes/funciones.php';
-require_once __DIR__ . '/includes/usuarios_db.php';
+require_once __DIR__ . '/app/bootstrap.php'; // funciones, usuarios_db y conexión PDO (TP10)
 
 if (usuarioActual()) {
     header('Location: mi-cuenta.php');
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($errores === []) {
-        require_once __DIR__ . '/config/conexion.php';
+        $pdo = App\Core\Database::conexion();
         try {
             if (emailRegistrado($pdo, $datos['email'])) {
                 $errores['email'] = 'Ya existe una cuenta con ese email.';

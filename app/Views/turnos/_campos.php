@@ -1,6 +1,6 @@
 <?php
-// campos_turno.php — Campos del formulario de turno (turnos.php y admin/_formulario.php)
-// Variables esperadas: $datos, $errores, $catalogos y $admin (bool)
+// Vista parcial: campos del formulario de turno (solicitar.php y form.php)
+// Variables: $datos, $errores, $catalogos, $horarios, $admin (bool) y $emailFijo (opcional)
 ?>
 <fieldset class="mb-4">
   <legend class="h5 mb-3">Datos del cliente</legend>
@@ -83,7 +83,7 @@
       <label class="form-label" for="horario">Horario</label>
       <select class="form-select<?= claseError($errores, 'horario') ?>" id="horario" name="horario" required>
         <option value="">Elegí</option>
-        <?php foreach (HORARIOS_TURNO as $h): ?>
+        <?php foreach ($horarios as $h): ?>
           <option value="<?= e($h) ?>"<?= seleccionado($datos, 'horario', $h) ?>><?= e($h) ?></option>
         <?php endforeach; ?>
       </select>
